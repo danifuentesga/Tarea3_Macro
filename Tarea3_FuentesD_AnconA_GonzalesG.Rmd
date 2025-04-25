@@ -1,0 +1,2308 @@
+---
+title: ""
+author: ""
+date: ""
+output: 
+  pdf_document:
+    toc: false
+geometry: margin=1in
+fontsize: 12pt
+---
+
+```{=tex}
+\begin{titlepage} % Crea una portada completa
+\begin{center}
+
+% Insertar la imagen (ajusta el nombre y tamaño según necesites)
+\includegraphics[width=10cm]{colmex.jpg}  
+
+\vspace{0.6cm}  
+
+{\Large \textbf{Maestría en Economía}}  
+
+\vspace{0.3cm}
+
+{\Large \textbf{2024-2026}}  
+
+\vspace{0.6cm}  
+
+\textcolor{red!50!black}{\noindent\rule{16cm}{0.8pt}}  % Línea horizontal  
+\vspace{0.5cm}  
+
+{\Huge \textbf{Macroeconomía II}}
+
+\vspace{0.5cm} 
+
+{\large \textbf{Tarea 3}} 
+
+\vspace{0.5cm}  
+\textcolor{red!50!black}{\noindent\rule{16cm}{0.8pt}}  % Línea horizontal    
+
+{\LARGE \textbf{Elaborado por:}}  
+\vspace{0.3cm}  
+
+{\large José Daniel Fuentes García}  
+
+{\large Andrés Ancona}  
+
+{\large Oscar Gibran González}  
+
+\vspace{0.5cm}  
+
+{\LARGE \textbf{Profesor}}  
+\vspace{0.3cm}  
+
+{\large Santiago Bazdresch}  
+
+\vspace{0.5cm}  
+
+{\LARGE \textbf{Fecha}}  
+\vspace{0.3cm}  
+
+{\large 25 de abril de 2025}  
+
+\end{center}
+\end{titlepage}
+
+```
+
+\newpage
+
+```{=latex}
+\tableofcontents
+```
+
+\newpage
+
+```{r paquetes_necesarios, include=FALSE, echo=FALSE}
+# Instalar y cargar librerías necesarias
+
+# Verificación e instalación de cada paquete si no está instalado
+if (!require(readxl)) install.packages("readxl", dependencies=TRUE)
+if (!require(dplyr)) install.packages("dplyr", dependencies=TRUE)
+if (!require(tidyr)) install.packages("tidyr", dependencies=TRUE)
+if (!require(ggplot2)) install.packages("ggplot2", dependencies=TRUE)
+if (!require(stringr)) install.packages("stringr", dependencies=TRUE)
+if (!require(scales)) install.packages("scales", dependencies=TRUE)
+if (!require(mFilter)) install.packages("mFilter", dependencies=TRUE)
+if (!require(knitr)) install.packages("knitr", dependencies=TRUE)
+if (!require(kableExtra)) install.packages("kableExtra", dependencies=TRUE)
+if (!require(patchwork)) install.packages("patchwork", dependencies=TRUE)
+if (!require(igraph)) install.packages("igraph", dependencies=TRUE)
+if (!require(lubridate)) install.packages("lubridate", dependencies=TRUE)
+if (!require(readr)) install.packages("readr", dependencies=TRUE)
+if (!require(viridis)) install.packages("viridis", dependencies=TRUE)
+
+# Cargar librerías
+library (readr)
+library(stargazer)
+library(jsonlite)
+library(modelsummary)
+library (httr)
+library(tibble)
+library(zoo)
+library(readxl)    # Para leer archivos Excel
+library(dplyr)     # Para manipulación de datos
+library(tidyr)     # Para limpiar y transformar datos
+library(ggplot2)   # Para gráficos
+library(stringr)   # Para manipulación de texto
+library(scales)    # Para manejo de escalas en gráficos
+library(mFilter)   # Para filtrado de series temporales
+library(knitr)     # Para generación de reportes en RMarkdown
+library(kableExtra) # Para mejorar tablas en Markdown
+library(patchwork) # Para organizar múltiples gráficos
+library(igraph)    # Para análisis de redes
+library(lubridate) # Para manejo de fechas
+library(readr)     # Para leer archivos de texto y CSV
+library(viridis)   # Para paletas de colores en gráficos
+
+```
+
+## **Instrucciones**
+Realice los siguientes ejercicios con el equipo que se definirá especificamente para esta tarea.
+
+## **Ejercicio 1 **
+Resuelva los ejercicios 9.1, 9.3, 9.4 y 9.14 (5a edición). Realice estos con 
+ayuda de su laboratorista y entregue las soluciones escritas a máquina, utilizando LaTeX. 
+[3 horas,0.5 punto cada inciso]
+
+### **Romer 9.1**
+
+***Considere una empresa que produce output usando una combinación Cobb–Douglas de capital y trabajo:***
+$$
+Y = K^\alpha L^{1 - \alpha}, \quad 0 < \alpha < 1
+$$
+
+***Suponga que el precio del bien que vende la empresa está fijado en el corto plazo, por lo que toma tanto el precio de su producto, \( P \), como la cantidad, \( Y \), como dados. Los mercados de insumos son competitivos; por tanto, la empresa toma el salario, \( W \), y el precio del alquiler del capital, \( r_k \), como dados.***
+
+#### **a)**
+
+***¿Cuál es la elección óptima de \( L \) dada \( P \), \( Y \), \( W \) y \( K \)?***
+
+\
+
+\textcolor{blue}{Como la demanda Y esta determinada y tambien el capital, basta con encontrar L en función de K, Y y $\alpha$:} 
+
+##### \textcolor{blue}{\(L^\ast \;=\; Y^{\frac{1}{1-\alpha}}\;K^{-\frac{\alpha}{1-\alpha}}\)}
+
+
+#### **b)**
+
+***Dada esta elección de \( L \), ¿cuáles son las ganancias como función de \( P \), \( Y \), \( W \) y \( K \)?***
+
+##### \textcolor{blue}{\(\pi(P,Y,W,K)=P\,Y - W\,L^\ast - r_K\,K \;\implies\; P\,Y - W\,Y^{\frac{1}{1-\alpha}}\,K^{-\frac{\alpha}{1-\alpha}} - r_K\,K\)}
+
+#### **c)**
+
+***Encuentre la condición de primer orden para la elección óptima de \( K \). ¿Se satisface la condición de segundo orden?***
+
+##### \textcolor{blue}{CPO: \(\displaystyle\frac{\partial\pi}{\partial K}\;=\;\frac{\alpha}{1-\alpha}\,W\,Y^{\frac{1}{1-\alpha}}\,K^{-\frac{1}{1-\alpha}} \;-\; r_K \;=\;0\)}
+
+##### \textcolor{blue}{CSO: \(\displaystyle\frac{\partial^2\pi}{\partial K^2}\;=\;-\frac{\alpha}{(1-\alpha)^2}\,W\,Y^{\frac{1}{1-\alpha}}\,K^{-\frac{1+\alpha}{1-\alpha}}\;<\;0\) (se cumple porque \(0<\alpha<1\)).}
+
+#### **d)**
+
+
+***Resuelva la condición de primer orden en el inciso (c) para \( K \) como función de \( P \), \( Y \), \( W \) y \( r_k \). ¿Cómo afecta cada una de estas variables a \( K \), si es que lo hace?***
+
+##### \textcolor{blue}{\(K^\ast \;=\; Y\left(\dfrac{\alpha}{1-\alpha}\,\dfrac{W}{r_K}\right)^{1-\alpha}\)}
+
+\
+
+\textcolor{blue}{P no afecta \(K\) directamente, aunque podría hacerlo de forma indirecta si \(Y\) depende de \(P\).} 
+
+\textcolor{blue}{- Elasticidad de \(K\) respecto al salario \(W\): \(1 - \alpha > 0\). Cuando \(W\) aumenta, \(K\) también aumenta.}
+
+\textcolor{blue}{- Elasticidad de \(K\) respecto al precio de renta del capital \(r_K\): \(-(1 - \alpha) < 0\). Cuando \(r_K\) aumenta, \(K\) disminuye.}
+
+\textcolor{blue}{- Elasticidad de \(K\) respecto a la cantidad demandada \(Y\): \(1\). Cuando \(Y\) aumenta, \(K\) aumenta en la misma proporción}
+
+#### \textcolor{blue}{-En resumen: \(\varepsilon_Y^{K}=1\), \(\varepsilon_W^{K}=1-\alpha>0\), \(\varepsilon_{r_K}^{K}=-(1-\alpha)<0\); el precio \(P\) no afecta a \(K\) directamente}
+
+
+
+
+### **Romer 9.3**
+
+***La característica principal del código fiscal que afecta el costo de uso del capital en el caso de la vivienda ocupada por su propietario en Estados Unidos es que los pagos de intereses nominales son deducibles de impuestos.***
+
+***Así, la tasa de interés real después de impuestos relevante para la propiedad de vivienda es:***
+$$
+r - \tau i
+$$
+
+***donde \( r \) es la tasa de interés real antes de impuestos, \( i \) es la tasa de interés nominal, y \( \tau \) es la tasa impositiva marginal. En este caso, ¿cómo afecta un aumento en la inflación (para un \( r \) dado) al costo de uso del capital y al stock de capital deseado?***
+
+
+#### \textcolor{blue}{Interés real después de impuestos cuando los pagos nominales son deducibles}
+\
+
+\textcolor{blue}{Una hipoteca genera un pago nominal \(i\). Si el tipo real antes de impuestos es \(r\) y la inflación esperada es \(\pi\):\[i \;=\; r \;+\; \pi.\]}
+
+\textcolor{blue}{Como los pagos nominales se pueden deducir, la fracción no deducida (el costo real que “duele”) es: \[
+r_{\text{después}} \;=\; r \;-\; \tau i \;=\; r \;-\;\tau(r+\pi)
+              \;=\; r(1-\tau)\;-\;\tau\pi.\]}
+
+#### \textcolor{blue}{Costo de Usar el capital residencial}
+\
+
+\textcolor{blue}{La fórmula general de Romer multiplicada por el precio de la vivienda \(P_H(t)\) es:\[
+UC \;=\; \bigl[r_{\text{after}} + \delta - \pi\bigr]\,P_H
+      \;=\;\bigl[r(1-\tau) + \delta - (1+\tau)\pi\bigr]\,P_H.
+\]}
+
+#### \textcolor{blue}{Cómo afecta un alza de la inflación}
+\
+
+\textcolor{blue}{Un aumento de \(\pi\) reduce el costo de usar el capital en \((1+\tau)\Delta\pi\,P_H\): 
+\[
+\frac{\partial UC}{\partial \pi}
+   \;=\; -(1+\tau)P_H
+   \;<\;0.
+\] }
+
+#### \textcolor{blue}{Implicación para el stock de capital deseado}
+\
+
+\textcolor{blue} {La demanda de capital residencial es decreciente en el costo de usar el capital; por lo tanto, una caída en \(UC\) (manteniendo \(r\) fijo) eleva el stock de vivienda deseado. Por lo tanto la deducción de intereses hipotecarios hace que una mayor inflación reduzca el user-cost de la vivienda en \((1+\tau)\pi\); esto incentiva más inversión residencial.}
+
+
+
+
+### **Romer 9.4**
+
+***Desarrollando intuición sobre la condición de transversalidad.***  
+Considere a un individuo que elige una trayectoria de \( G \) para maximizar:  
+$$
+\int_0^\infty e^{-\rho t} \left[-\frac{a}{2} G(t)^2 \right] dt, \quad a > 0, \, \rho > 0.
+$$
+
+***Aquí, \( G(t) \) representa la cantidad de basura que el individuo genera en el tiempo \( t \); para simplificar, se permite la posibilidad de que \( G \) sea negativa. La creación de basura por parte del individuo afecta su stock de basura. En particular, el stock de basura, \( T \), evoluciona según \( T(0) = 0 \), \( \dot{T}(t) = G(t) \).***
+
+#### **a)**
+
+***Demuestre —usando la menor cantidad de matemáticas posible— que la trayectoria que maximiza la utilidad es \( G(t) = 0 \) para todo \( t \).***
+
+\
+\textcolor{blue}{ El integrando es \( -\frac{a}{2}G(t)^2 \le 0 \), con máximo \( 0 \) que se logra sólo si \( G(t) = 0 \).Por lo tanto, la ruta óptima es:\[
+G(t) = 0 \quad \forall\,t.
+\]}
+
+#### **b)**
+
+***Suponga que queremos analizar este problema usando el cálculo de variaciones. Sea \( G \) la variable de control y \( T \) la variable de estado, y sea \( \mu \) la variable de costo sombra. ¿Cuál es el Hamiltoniano actual?***
+\
+
+\textcolor{blue}{Hamiltoniano en valor corriente, donde \( G \) es la variable de control, \( T \) es la de estado y \( \mu(t) \) es la de coestado:\[
+\mathcal{H}(G,T,\mu) = -\frac{a}{2}G^2 + \mu\,G,
+\qquad \dot{T} = G, \quad T(0) = 0.
+\]}
+
+#### **c)**
+
+***Encuentre las condiciones de optimalidad sin transversalidad y describa los caminos de \( G \) que satisfacen esas condiciones.***
+
+\textcolor{blue}{\[
+\begin{cases}
+\frac{\partial \mathcal{H}}{\partial G} = -aG + \mu = 0 \Rightarrow \mu(t) = a\,G(t) \\[6pt]
+\dot{\mu} = \rho\,\mu - \frac{\partial \mathcal{H}}{\partial T} = \rho\,\mu
+\end{cases}
+\]}
+
+\textcolor{blue}{Como \( \mu = a\,G \), se tiene:\[
+\dot{G} = \rho\,G
+\quad \Rightarrow \quad
+G(t) = G_0\,e^{\rho t}.
+\]}
+
+\textcolor{blue}{ Y el estado evoluciona como:\[
+T(t) = \int_0^t G(s)\,ds = \frac{G_0}{\rho}(e^{\rho t} - 1).
+\]}
+
+#### **d)**
+
+***¿Qué es la condición de transversalidad? Muestre que esta descarta todas las trayectorias excepto una de las que encontró en el inciso (c), y que esa trayectoria es precisamente la que demostró ser óptima en el inciso (a): \( G(t) = 0 \) para todo \( t \).***
+\
+
+\textcolor{blue}{La condición de transversalidad (en valor presente) es:\[
+\lim_{t \to \infty} e^{-\rho t} \mu(t) T(t) = 0.
+\]}
+
+\textcolor{blue}{Sustituyendo \( \mu(t) = aG_0e^{\rho t} \) y \( T(t) = \frac{G_0}{\rho}(e^{\rho t} - 1) \):\[
+e^{-\rho t} \mu(t) T(t) = \frac{a G_0^2}{\rho}(e^{\rho t} - 1)
+\quad \longrightarrow \quad \infty \quad \text{, si} \; G_0 \ne 0.
+\]}
+
+
+\textcolor{blue}{Entonces la TVC se viola si \( G_0 \ne 0 \). Por tanto, sólo se cumple si:\[
+G_0 = 0 \Rightarrow G(t) = 0 \quad \forall\,t.
+\]}
+
+#### **e)**
+
+***Explique en una frase o dos por qué las soluciones en (c) distintas de \( G(t) = 0 \) para todo \( t \) parecen ser de máxima utilidad si no se considera la condición de transversalidad, y por qué esta condición las descarta.***
+
+\ 
+
+\textcolor{blue}{Sin la TVC, las soluciones con \( G(t) = G_0e^{\rho t} > 0 \) parecen óptimas porque reducen la desutilidad inmediata. Pero el costo acumulado de basura crece sin control.La TVC exige que el valor presente de la basura total no explote; esto sólo ocurre si \( G_0 = 0 \), lo que garantiza que \( G(t) = 0 \) es la única trayectoria óptima.} 
+
+
+### **Romer 9.14**
+
+*(Basado en Bernanke, 1983a, y Dixit y Pindyck, 1994.)*  
+Considere una empresa que está evaluando realizar una inversión con un costo \( I \). Hay dos periodos. La inversión genera un retorno \( \pi_1 \) en el periodo 1 y \( \pi_2 \) en el periodo 2. \( \pi_1 \) es cierto, pero \( \pi_2 \) es incierto. La empresa maximiza las ganancias esperadas y, para simplificar, se supone que la tasa de interés es cero.
+
+#### **a)**
+
+***Suponga que las únicas opciones de la empresa son realizar la inversión en el periodo 1 o no invertir en absoluto. ¿Bajo qué condición la empresa realizará la inversión?***
+
+\
+
+\textcolor{blue}{- Si no invierte, la utilidad esperada es 0:\[
+  E[\pi^{\text{NO}}] = 0.
+  \]} 
+  
+
+\textcolor{blue}{- Si invierte en el periodo 1, obtiene: \[
+  E[\pi^{\text{SÍ}}] = \pi_1 + E[\pi_2] - I.
+  \]}
+
+\textcolor{blue}{- La firma invertirá si:  \[
+  \pi_1 + E[\pi_2] > I.
+  \]}
+  
+
+#### **b)**
+
+***Suponga que la empresa también tiene la posibilidad de realizar la inversión en el periodo 2, una vez que se conoce el valor de \( \pi_2 \); en este caso, la inversión solo rinde \( \pi_2 \). ¿Es posible que se cumpla la condición del inciso (a) pero que las ganancias esperadas de la empresa sean mayores si no invierte en el periodo 1 que si lo hace?***
+
+\
+\textcolor{blue}{Sí, si espera, solo invertirá si \( \pi_2 > I \), y entonces ganará \( \pi_2 - I \); si no, gana 0.  \[
+  E[\pi^{\text{NO EN 1}}] = \mathbb{P}(\pi_2 > I) \cdot E[\pi_2 - I \mid \pi_2 > I].
+  \]}
+
+\textcolor{blue}{- En cambio, si invierte en 1: \[
+  E[\pi^{\text{SÍ EN 1}}] = \pi_1 + E[\pi_2] - I.
+  \]}
+
+\textcolor{blue}{- Entonces la firma preferirá esperar si:  \[
+  \mathbb{P}(\pi_2 > I) \cdot E[\pi_2 - I \mid \pi_2 > I] > \pi_1 + E[\pi_2] - I.
+  \]}
+
+\textcolor{blue}{Aunque la condición del inciso (a) se cumpla, esperar puede generar mayor utilidad esperada si hay opción de evitar pérdidas cuando \( \pi_2 < I \).}
+
+
+#### **c)**
+
+***Defina el costo de esperar como \( \pi_1 \), y defina el beneficio de esperar como \( \text{Prob}(\pi_2 < I) E[I - \pi_2 \mid \pi_2 < I] \). Explique por qué estas expresiones representan el costo y el beneficio de esperar. Muestre que la diferencia en las ganancias esperadas de la empresa entre no invertir en el periodo 1 e invertir en el periodo 1 es igual al beneficio de esperar menos el costo.***
+
+\
+
+\textcolor{blue}{- La diferencia entre esperar y no esperar es:\[
+E[\pi^{\text{NO EN 1}}] - E[\pi^{\text{SÍ EN 1}}] =
+\mathbb{P}(\pi_2 > I) \cdot E[\pi_2 - I \mid \pi_2 > I] - (\pi_1 + E[\pi_2] - I).
+\]}
+
+\textcolor{blue}{- Pero usando la identidad de expectativas condicionales:\[
+E[\pi_2 - I] = \mathbb{P}(\pi_2 > I) E[\pi_2 - I \mid \pi_2 > I] +
+\mathbb{P}(\pi_2 < I) E[\pi_2 - I \mid \pi_2 < I].
+\]}
+
+\textcolor{blue}{- Sustituyendo en la expresión:\[
+E[\pi^{\text{NO EN 1}}] - E[\pi^{\text{SÍ EN 1}}] = -\pi_1 + \mathbb{P}(\pi_2 < I) \cdot E[I - \pi_2 \mid \pi_2 < I].
+\]}
+
+\textcolor{blue}{- Por tanto:\[
+E[\text{esperar}] - E[\text{invertir en 1}] = \text{beneficio de esperar} - \text{costo de esperar}.
+\]}
+
+
+## **Ejercicio 2 **
+Estudie los determinantes de la inversión agregada en México siguiendo
+estos pasos: [3 horas, 0.5 puntos cada inciso]
+
+### **a)**  
+***Obtenga, del Inegi, datos DESESTACIONALIZADOS para México del consumo “C”, datos de “I”, la inversión privada (inversión fija bruta), y de “Y”, el PIB, entre 1988 y 2024/IV, A FRECUENCIA TRIMESTRAL, EN TÉRMINOS REALES y grafique las tres series.***  
+***Si encuentra varias series pero ninguna cubre el período completo, tome una decisión ejecutiva para “unir” las series.***
+
+A partir de las bases de datos del INEGI, se dispone de información trimestral en millones de pesos corrientes para el consumo, la inversión privada, el PIB, el consumo privado, el consumo de gobierno y la formación bruta de capital fijo (FBCF), desde 1993T1 hasta 2024T4. Esta información proviene del sistema de cuentas nacionales dentro del apartado de "Oferta y demanda globales de bienes y servicios". Sin embargo, el análisis que se desea realizar requiere comenzar desde 1988T1. El INEGI también ofrece información para el periodo 1988T1–1993T4, aunque esta se encuentra dentro del apartado de series "que ya no se actualizan", reportadas únicamente en precios constantes con año base 1993.
+
+Dado que el tramo 1988–1993 solo está disponible en precios constantes de 1993, y que para el periodo 1993–2024 existen tanto series en precios corrientes como en año base 2018, se opta por trabajar toda la serie unificada en precios constantes de 1993. Esto permite evitar las complicaciones que implicaría empalmar series con dos años base distintos. Por tanto, se convertirá la serie corriente (1993T1–2024T4) a precios constantes de 1993 usando un índice implícito basado en el trimestre en común (1993T1), y posteriormente se unificará con la serie histórica (1988T1–1993T4).
+
+```{r grafica-pib, warning=FALSE, message=FALSE, echo=FALSE, fig.align='top', fig.height=6, fig.width=9, out.extra='keepaspectratio=true', fig.pos='H', fig.cap="Evolución del PIB trimestral: precios corrientes vs. constantes de 1993 (1988T1–2024T4). Fuente: elaboración propia con datos del INEGI."}
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(scales)
+
+# Cargar bases
+corriente <- read_excel("corriente_serie_dest_C_FBCJ_Y_1993_2024.xlsx")
+constante <- read_excel("cte_serie_dest_C_FBCJ_Y_1988_1993.xlsx")
+
+# Estandarizar nombres
+names(corriente) <- tolower(names(corriente))
+names(constante) <- tolower(names(constante))
+
+# Etiquetar origen
+corriente <- corriente %>%
+  mutate(origen = "Corriente (1993–2024)")
+
+constante <- constante %>%
+  mutate(origen = "Constante 1993 (1988–1993)")
+
+# Combinar bases
+base_combinada <- bind_rows(corriente, constante)
+
+# Crear gráfico
+graf_pib <- ggplot(base_combinada, aes(x = fecha, y = pib, color = origen)) +
+  geom_line(size = 1) +
+  scale_y_continuous(labels = label_comma(scale = 1e-6, suffix = " M")) +
+  scale_color_manual(values = c("Constante 1993 (1988–1993)" = "#d62728",
+                                "Corriente (1993–2024)" = "#17becf")) +
+  labs(title = "PIB trimestral de México: comparación entre series",
+       subtitle = "Millones de pesos – precios corrientes y constantes de 1993",
+       x = "Fecha",
+       y = "PIB (millones de pesos)",
+       color = "Serie") +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    plot.subtitle = element_text(size = 11),
+    legend.position = "right",
+    legend.title = element_text(size = 11),
+    legend.text = element_text(size = 10)
+  )
+
+graf_pib
+
+
+```
+
+Para cumplir con el objetivo del inciso a), es necesario contar con series trimestrales desestacionalizadas y en términos reales del consumo (\( C \)), la inversión privada (\( I \)) y el PIB (\( Y \)), para el periodo completo de 1988T1 a 2024T4. Sin embargo, el INEGI proporciona estas variables en dos bases de datos distintas:
+
+- Una serie más reciente (1993T1–2024T4), disponible en **millones de pesos corrientes**.
+- Una serie histórica (1988T1–1993T4), que ya no se actualiza, disponible en **precios constantes con año base 1993**.
+
+Dado que la serie histórica solo está disponible en precios constantes de 1993, y que tomar la serie reciente en precios constantes implica hacerlo en año base 2018 (lo cual dificultaría el empalme), se opta por convertir toda la serie reciente a precios constantes de 1993.
+
+Para ello, se construye un **índice implícito de precios** utilizando como referencia el primer trimestre común a ambas series: **1993T1**. Para cada variable \( X \in \{C, I, Y\} \), se calcula el índice de precios:
+
+$$
+\text{Índice}_{X,1993T1} = \frac{X^{\text{corriente}}_{1993T1}}{X^{\text{constante}}_{1993T1}}
+$$
+
+Una vez obtenido el índice, se deflacta la serie en precios corrientes para obtenerla en términos reales de 1993:
+
+$$
+X^{\text{real 1993}}_t = \frac{X^{\text{corriente}}_t}{\text{Índice}_{X,1993T1}}, \quad \text{para todo } t \in [1993T1, 2024T4]
+$$
+
+Finalmente, se concatenan las dos series (1988T1–1993T1 en precios constantes y 1993T1–2024T4 convertidas a reales de 1993) para obtener una única base de datos larga, continua y consistente en términos reales, lo que permite graficar y analizar toda la serie completa desde 1988T1 hasta 2024T4.
+
+```{r unificar-series, warning=FALSE, message=FALSE, echo=FALSE,fig.align='top', fig.height=6, fig.width=9, out.extra='keepaspectratio=true', fig.pos='H', fig.cap="Consumo, inversión privada y PIB en términos reales (precios de 1993), 1988T1–2024T4. Fuente: elaboración propia con datos del INEGI."}
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(scales)
+library(lubridate)
+
+# Cargar bases
+corriente <- read_excel("corriente_serie_dest_C_FBCJ_Y_1993_2024.xlsx")
+constante <- read_excel("cte_serie_dest_C_FBCJ_Y_1988_1993.xlsx")
+
+# Estandarizar nombres
+names(corriente) <- tolower(names(corriente))
+names(constante) <- tolower(names(constante))
+
+# Extraer trimestre 1993T1 (marzo)
+valor_1993T1_cte <- constante %>% filter(year(fecha) == 1993 & month(fecha) == 3)
+valor_1993T1_corr <- corriente %>% filter(year(fecha) == 1993 & month(fecha) == 3)
+
+# Calcular índices implícitos
+indice_pib <- valor_1993T1_corr$pib / valor_1993T1_cte$pib
+indice_con <- valor_1993T1_corr$consumo / valor_1993T1_cte$consumo
+indice_inv <- valor_1993T1_corr$inv_privada / valor_1993T1_cte$inv_privada
+
+# Deflactar la serie corriente
+corriente_reales <- corriente %>%
+  mutate(pib = pib / indice_pib,
+         consumo = consumo / indice_con,
+         inv_privada = inv_privada / indice_inv)
+
+# Unir ambas series
+unificada <- constante %>%
+  filter(year(fecha) < 1993 | (year(fecha) == 1993 & month(fecha) < 3)) %>%
+  select(fecha, consumo, inv_privada, pib) %>%
+  bind_rows(
+    corriente_reales %>%
+      select(fecha, consumo, inv_privada, pib)
+  )
+
+# Pivotear para graficar
+datos_long <- unificada %>%
+  pivot_longer(cols = c("consumo", "inv_privada", "pib"),
+               names_to = "variable", values_to = "valor") %>%
+  mutate(variable = recode(variable,
+                           "consumo" = "Consumo (C)",
+                           "inv_privada" = "Inversión privada (I)",
+                           "pib" = "PIB (Y)"))
+
+# Crear gráfico
+graf_unificada <- ggplot(datos_long, aes(x = fecha, y = valor, color = variable)) +
+  geom_line(size = 1) +
+  scale_y_continuous(labels = label_comma(scale = 1e-6, suffix = " M")) +
+  labs(title = "Series trimestrales reales desestacionalizadas",
+       subtitle = "Precios constantes de 1993",
+       x = "Fecha",
+       y = "Millones de pesos",
+       color = "Variable") +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    plot.subtitle = element_text(size = 11),
+    legend.title = element_text(size = 11),
+    legend.text = element_text(size = 10)
+  )
+
+# Mostrar gráfico
+graf_unificada
+
+```
+
+Para construir las series homogéneas de consumo e inversión privada en términos reales, se siguió una estrategia metodológica coherente con la disponibilidad de datos en las distintas bases del INEGI. La variable **consumo** se definió como la suma del *consumo privado* y el *consumo de gobierno*, disponibles explícitamente tanto en la base 1988T1–1993T4 como en la base 1993T1–2024T4.
+
+En cuanto a la **inversión privada**, esta no se encuentra desagregada explícitamente en la serie histórica en precios constantes de 1993. Por ello, se procedió de la siguiente forma: de acuerdo con la información más reciente (1993T1–2024T4), disponible en la base de cifras constantes con año base 2018, se identificó que, en promedio, aproximadamente el **83% de la Formación Bruta de Capital Fijo (FBCF)** corresponde a la inversión privada. Esta proporción se utilizó como estimación para obtener la inversión privada en el periodo 1988T1–1992T4. Para los datos a partir de 1993T1, se utilizó la proporción exacta de inversión privada sobre FBCF disponible en la base de precios constantes (2018), la cual fue posteriormente convertida a precios constantes de 1993 mediante el procedimiento de deflactación descrito anteriormente.
+
+
+### **b)**  
+***Grafique la relación entre los cambios de I y los de Y, es decir, grafique los puntos ($\Delta Y_t$, $\Delta I_t$), poniendo la inversión en el eje de las ordenadas.***
+
+Para construir esta gráfica, se calcularon las tasas de crecimiento trimestrales de la inversión privada y del PIB, utilizando log-diferencias multiplicadas por 100 (aproximación al cambio porcentual). A partir de estas tasas, se graficó la relación entre ambos cambios, colocando el cambio porcentual en el PIB en el eje horizontal y el cambio porcentual en la inversión privada en el eje vertical, como indica el inciso. Esto permite observar la asociación entre ambas variables a lo largo del tiempo.
+
+
+```{r grafica-relacion, warning=FALSE, message=FALSE, echo=FALSE, fig.pos='H', fig.align="center", fig.cap="Relación entre cambios en PIB y cambios en Inversión privada, donde la inversión se coloca en el eje de las ordenadas. Fuente: elaboración propia con datos del INEGI."}
+library(dplyr)
+library(ggplot2)
+library(scales)
+
+# Calcular tasas de crecimiento para PIB y Inversión privada.
+datos_cambios <- unificada %>%
+  arrange(fecha) %>%
+  mutate(
+    dlog_y = 100 * (log(pib) - lag(log(pib))),
+    dlog_i = 100 * (log(inv_privada) - lag(log(inv_privada)))
+  ) %>%
+  filter(!is.na(dlog_y) & !is.na(dlog_i))
+
+# Crear gráfico de dispersión: x = cambio en PIB, y = cambio en Inversión privada.
+graf_rel <- ggplot(datos_cambios, aes(x = dlog_y, y = dlog_i)) +
+  geom_point(alpha = 0.7, color = "blue", size = 2) +
+  labs(
+    title = "Relación entre cambios en PIB e inversión privada",
+    subtitle = "Cambio porcentual en PIB vs. cambio porcentual en inversión privada",
+    x = "Cambio porcentual en PIB",
+    y = "Cambio porcentual en Inversión privada"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    plot.subtitle = element_text(size = 12),
+    axis.title = element_text(size = 12),
+    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 9)
+  )
+
+graf_rel
+```
+
+La gráfica muestra una relación positiva entre el cambio porcentual del PIB y el cambio porcentual de la inversión privada. Es decir, cuando la economía crece (mayor $\Delta Y_t$), la inversión privada tiende a aumentar también (mayor $\Delta I_t$). Visualmente, se observa una nube de puntos concentrada en el cuadrante superior derecho, lo que indica que las expansiones económicas suelen estar asociadas con aumentos en la inversión.
+
+Esto sugiere que, en promedio, por cada punto porcentual adicional de crecimiento en el PIB trimestral, la inversión privada también crece, aunque con mayor dispersión. La dispersión observada en el eje vertical indica que, si bien la relación es positiva, la inversión presenta mayor volatilidad frente a los movimientos del producto. Este comportamiento es consistente con la evidencia empírica sobre la prociclicidad de la inversión y podría interpretarse —en términos generales— como una señal de que las decisiones de inversión del sector privado responden de manera sensible al ciclo económico.
+
+
+### **c)**  
+***Calcule la volatilidad de cada serie y la covarianza entre las tres series de tasa de crecimiento ($\Delta I$, $\Delta C$ y $\Delta Y$), describa cuál es más volátil y cuáles cambios, si los de I o los de C, están más relacionados con los de Y.***
+
+```{r tabla-volatilidades, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+library(dplyr)
+library(knitr)
+library(kableExtra)
+
+# Calcular tasas de crecimiento
+datos_cambios <- unificada %>%
+  arrange(fecha) %>%
+  mutate(
+    dlog_y = 100 * (log(pib) - lag(log(pib))),
+    dlog_c = 100 * (log(consumo) - lag(log(consumo))),
+    dlog_i = 100 * (log(inv_privada) - lag(log(inv_privada)))
+  ) %>%
+  select(fecha, dlog_y, dlog_c, dlog_i) %>%
+  filter(complete.cases(.))
+
+# Calcular volatilidades
+volatilidades <- datos_cambios %>%
+  summarise(
+    "Delta Y (PIB)" = sd(dlog_y),
+    "Delta C (Consumo)" = sd(dlog_c),
+    "Delta I (Inv. privada)" = sd(dlog_i)
+  ) %>%
+  pivot_longer(everything(), names_to = "Variable", values_to = "Volatilidad (desv. estándar)")
+
+# Mostrar título sin caption
+cat("\\textbf{Matriz de volatilidad entre tasas de crecimiento}\n\n")
+
+# Crear tabla sin caption
+tabla_volatilidades <- kable(volatilidades,
+                             format = "latex", booktabs = TRUE, align = "c",
+                             col.names = c("Variable", "Volatilidad (desv. estándar)")) %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"))
+
+tabla_volatilidades
+```
+
+La volatilidad se calculó como la desviación estándar de las tasas de crecimiento trimestrales (en logaritmos multiplicados por 100) de las tres variables clave: PIB, consumo e inversión privada. Este indicador resume la variabilidad de cada serie a lo largo del tiempo y permite comparar qué variable presenta mayores fluctuaciones relativas.
+
+Los resultados muestran que la inversión privada es la variable más volátil, con una desviación estándar de 5.10 puntos porcentuales, casi el doble que la del consumo (2.59) y mayor también que la del PIB (2.93). Esto es consistente con la literatura empírica y teórica, donde la inversión es típicamente más sensible a choques económicos que el resto de los componentes de la demanda agregada.
+
+
+```{r tabla-covarianzas, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+# Matriz de covarianza
+covarianzas <- datos_cambios %>%
+  select("Delta Y" = dlog_y,
+         "Delta C" = dlog_c,
+         "Delta I" = dlog_i) %>%
+  cov()
+
+# Mostrar título sin caption
+cat("\\textbf{Matriz de covarianza entre tasas de crecimiento}\n\n")
+
+# Crear tabla sin caption
+tabla_covarianzas <- kable(covarianzas,
+                           format = "latex", booktabs = TRUE, align = "c") %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"))
+
+tabla_covarianzas
+```
+
+La matriz de covarianza entre las tasas de crecimiento permite identificar qué tan estrechamente se mueven las series entre sí. Este indicador refleja no solo la dirección de la relación entre dos variables, sino también su magnitud conjunta en unidades cuadradas.
+
+Se observa que todas las covarianzas son positivas, lo que indica que las tres variables tienden a moverse en la misma dirección. Destaca la fuerte covarianza entre PIB e inversión privada (11.10), superior a la del PIB con el consumo (7.03), lo que sugiere que los ciclos del producto están más correlacionados con decisiones de inversión que con el consumo, alineado con la teoría del comportamiento procíclico de la inversión.
+
+
+### **d)**  
+***Grafique los tres correlogramas de las series de tasa de crecimiento ($\Delta I$, $\Delta C$ y $\Delta Y$), es decir (I,C), (I,Y), (Y,C), y describa si alguna serie parece anticiparse a las otras dos o no.***
+
+Para construir los correlogramas cruzados, se calcularon las tasas de crecimiento trimestrales de la inversión privada, el consumo y el PIB, a partir de logaritmos de sus valores reales multiplicados por 100. Posteriormente, se utilizaron funciones de correlación cruzada (CCF) para estimar las correlaciones entre pares de variables a distintos rezagos y adelantos, permitiendo analizar si alguna serie tiende a anticiparse o retrasarse respecto a otra. Los intervalos de confianza  ($\pm 2/\sqrt{n}$) permiten evaluar si las correlaciones observadas son estadísticamente significativas.
+
+```{r correlogramas-formales, echo=FALSE, message=FALSE, warning=FALSE, fig.pos='H', fig.width=7, fig.height=7, fig.cap="Correlogramas cruzados entre tasas de crecimiento (formato técnico). Fuente: elaboración propia con datos del INEGI."}
+library(ggplot2)
+library(patchwork)
+library(dplyr)
+
+# Calcular tasas de crecimiento si no existen
+datos_cambios <- unificada %>%
+  arrange(fecha) %>%
+  mutate(
+    dlog_y = 100 * (log(pib) - lag(log(pib))),
+    dlog_c = 100 * (log(consumo) - lag(log(consumo))),
+    dlog_i = 100 * (log(inv_privada) - lag(log(inv_privada)))
+  ) %>%
+  filter(complete.cases(.))
+
+# Número de observaciones y bandas de confianza
+n_obs <- nrow(datos_cambios)
+limite_conf <- 2 / sqrt(n_obs)
+
+# ---- 1. Correlograma I vs C ----
+ccf_ic <- ccf(datos_cambios$dlog_i, datos_cambios$dlog_c, plot = FALSE)
+df_ic <- data.frame(lag = ccf_ic$lag, acf = ccf_ic$acf)
+
+graf_ic <- ggplot(df_ic, aes(x = lag, y = acf)) +
+  geom_hline(yintercept = 0, color = "gray40") +
+  geom_hline(yintercept = c(limite_conf, -limite_conf), linetype = "dashed", color = "blue") +
+  geom_segment(aes(xend = lag, yend = 0), color = "blue", linewidth = 1) +
+  labs(title = "Correlograma: I vs C", x = "Rezago (I respecto a C)", y = "Correlación cruzada") +
+  theme_minimal(base_size = 12)
+
+# ---- 2. Correlograma I vs Y ----
+ccf_iy <- ccf(datos_cambios$dlog_i, datos_cambios$dlog_y, plot = FALSE)
+df_iy <- data.frame(lag = ccf_iy$lag, acf = ccf_iy$acf)
+
+graf_iy <- ggplot(df_iy, aes(x = lag, y = acf)) +
+  geom_hline(yintercept = 0, color = "gray40") +
+  geom_hline(yintercept = c(limite_conf, -limite_conf), linetype = "dashed", color = "blue") +
+  geom_segment(aes(xend = lag, yend = 0), color = "blue", linewidth = 1) +
+  labs(title = "Correlograma: I vs Y", x = "Rezago (I respecto a Y)", y = "Correlación cruzada") +
+  theme_minimal(base_size = 12)
+
+# ---- 3. Correlograma C vs Y ----
+ccf_cy <- ccf(datos_cambios$dlog_c, datos_cambios$dlog_y, plot = FALSE)
+df_cy <- data.frame(lag = ccf_cy$lag, acf = ccf_cy$acf)
+
+graf_cy <- ggplot(df_cy, aes(x = lag, y = acf)) +
+  geom_hline(yintercept = 0, color = "gray40") +
+  geom_hline(yintercept = c(limite_conf, -limite_conf), linetype = "dashed", color = "blue") +
+  geom_segment(aes(xend = lag, yend = 0), color = "blue", linewidth = 1) +
+  labs(title = "Correlograma: C vs Y", x = "Rezago (C respecto a Y)", y = "Correlación cruzada") +
+  theme_minimal(base_size = 12)
+
+# Combinar los tres gráficos verticalmente
+graf_ic / graf_iy / graf_cy
+```
+
+Los correlogramas muestran una fuerte correlación contemporánea (rezago cero) entre la inversión y el PIB, así como entre el consumo y el PIB, lo cual sugiere que estas variables tienden a moverse simultáneamente. No se observan patrones claros de anticipación: ni el consumo ni la inversión parecen liderar consistentemente los movimientos del producto. Este resultado es coherente con la teoría de la demanda agregada en modelos de ciclo económico, donde la inversión responde rápidamente a cambios en las expectativas de crecimiento y tasas de interés reales (como sugiere la q de Tobin), pero no necesariamente se anticipa al ciclo. La sincronía observada refleja la fuerte prociclicidad de la inversión y del consumo, componentes fundamentales de las fluctuaciones del PIB.
+
+A partir de los correlogramas cruzados, no se observa evidencia clara de que alguna serie se anticipe sistemáticamente a las demás. Las correlaciones más fuertes ocurren en el rezago cero, lo que sugiere movimientos simultáneos. La inversión, el consumo y el PIB tienden a comportarse de forma contemporánea. Esto indica que ninguna serie actúa consistentemente como variable líder.
+
+\newpage
+
+### **e)**  
+***Obtenga, del Banco de México, datos sobre las tasas de interés reales \( r^* = r^n - \pi \), es decir, la tasa de interés nominal, menos la tasa de inflación esperada (en cuyo caso se trata de la tasa de interés real *ex-ante*), o menos la tasa de inflación observada (en cuyo caso se trata de la *ex-post*) y grafíquelas.***
+
+Para este ejercicio se cuenta con una base mensual que incluye tres variables clave: la tasa de interés nominal (\(r^n\)), la tasa de inflación observada general (\(\pi\)), y las expectativas de inflación a 12 meses (\(\pi^{e}\)), reportadas por el Banco de México. Las series de tasas nominales y de inflación observada están disponibles de 1988 a 2024, mientras que la serie de expectativas comienza en 1999. Aunque las variables se reportan mensualmente, el objetivo final del análisis es estimar modelos lineales sobre la inversión, cuya base está disponible en frecuencia trimestral.
+
+Por tanto, se agregan las series mensuales mediante el promedio simple por trimestre. La tasa de interés real ex post se calcula como \(r^*_{t} = r^n_{t} - \pi_{t}\), donde ambos términos corresponden a promedios trimestrales. Para la tasa real ex ante, se utiliza la expectativa de inflación a 12 meses como aproximación trimestral constante dentro de cada periodo, aplicando la fórmula \(r^*_{t} = r^n_{t} - \pi^{e}_{t}\). Esto permite mantener consistencia temporal entre las variables financieras y las variables macroeconómicas reales.
+
+```{r tasas-reales-grafica, echo=FALSE, message=FALSE, warning=FALSE, fig.pos='H', fig.width=7, fig.height=5, fig.cap="Tasa de interés real ex ante y ex post (trimestral). Fuente: elaboración propia con datos del Banco de México."}
+library(readxl)
+library(dplyr)
+library(lubridate)
+library(zoo)
+library(tidyr)
+library(ggplot2)
+
+# Leer base mensual
+tasas_interes <- read_excel("tasas_interes.xlsx") %>%
+  mutate(fecha = as.Date(fecha)) # Asegura formato fecha
+
+# Crear columna año-trimestre con zoo
+tasas_interes <- tasas_interes %>%
+  mutate(trimestre = as.yearqtr(fecha))  # ejemplo: "1993 Q1"
+
+# Agregar por trimestre (promedios)
+tasas_trimestral <- tasas_interes %>%
+  group_by(trimestre) %>%
+  summarise(
+    tasa_nominal = mean(tasa_interes, na.rm = TRUE),
+    inflacion_obs = mean(inflación_obs, na.rm = TRUE),
+    inflacion_esp = mean(inflacion_esp, na.rm = TRUE)
+  ) %>%
+  ungroup()
+
+# Calcular tasas reales
+tasas_trimestral <- tasas_trimestral %>%
+  mutate(
+    tasa_real_expost = tasa_nominal - inflacion_obs,
+    tasa_real_exante = ifelse(!is.na(inflacion_esp), tasa_nominal - inflacion_esp, NA),
+    fecha = as.Date(trimestre)  # convierte Qtr a fecha (ej. 01/01/1993)
+  )
+
+# Convertir a formato largo para graficar
+tasas_long <- tasas_trimestral %>%
+  pivot_longer(cols = c(tasa_real_expost, tasa_real_exante),
+               names_to = "tipo_tasa", values_to = "valor") %>%
+  mutate(tipo_tasa = recode(tipo_tasa,
+                            "tasa_real_expost" = "Tasa real ex post",
+                            "tasa_real_exante" = "Tasa real ex ante"))
+
+# Crear gráfico
+graf_tasas_reales <- ggplot(tasas_long, aes(x = fecha, y = valor, color = tipo_tasa)) +
+  geom_line(linewidth = 1) +
+  labs(title = "Tasa de interés real: ex ante vs. ex post",
+       x = "Fecha (trimestres)",
+       y = "Porcentaje",
+       color = "Tipo de tasa") +
+  theme_minimal(base_size = 12)
+
+# Mostrar gráfico
+graf_tasas_reales
+```
+
+
+\newpage
+### **f)**  
+***Estime una serie de modelos lineales con el objetivo de averiguar qué variables predicen la tasa de crecimiento de la inversión \( \Delta I_t \). Utilice valores corrientes y rezagados del crecimiento en el producto, de la tasa de interés real, valores rezagados de la propia tasa de cambio en la inversión y combinaciones de estas variables.***
+
+#### \textcolor{red}{Modelo 1}
+
+El *Modelo 1* estima la relación entre el crecimiento de la inversión privada (\( \Delta I_t \)) y el crecimiento contemporáneo del PIB (\( \Delta Y_t \)). Esta especificación busca capturar el efecto procíclico de la actividad económica sobre la inversión. La ecuación estimada es:
+
+\[
+\Delta I_t = \alpha + \beta_1 \Delta Y_t + \varepsilon_t
+\]
+
+Este modelo sirve como punto de partida para evaluar si el crecimiento del producto tiene un efecto inmediato sobre la inversión.
+
+```{r modelo1-tabla, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+library(kableExtra)
+library(tibble)
+
+# Modelo 1: ΔIt = α + β1 ΔYt + εt
+modelo_1 <- lm(dlog_i ~ dlog_y, data = datos_cambios)
+
+# Crear tabla como objeto
+tabla_modelo_1 <- summary(modelo_1)$coefficients %>%
+  round(4) %>%
+  as.data.frame() %>%
+  rownames_to_column("Variable") %>%
+  kable(format = "latex", booktabs = TRUE,
+        caption = "Modelo 1: Regresión de la tasa de crecimiento de la inversión sobre el crecimiento del PIB.",
+        col.names = c("Variable", "Coeficiente", "Error estándar", "Estadístico t", "Valor p"),
+        align = "c") %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"))
+
+# Mostrar tabla al final
+tabla_modelo_1
+```
+
+Los resultados del Modelo 1 muestran que el coeficiente del crecimiento del PIB (\( \Delta Y_t \)) es positivo y estadísticamente significativo. En particular, un aumento de un punto porcentual en el PIB se asocia, en promedio, con un incremento de 1.29 puntos porcentuales en la tasa de crecimiento de la inversión. Este resultado es coherente con la teoría, donde la inversión es una variable procíclica que responde positivamente al dinamismo de la actividad económica.
+
+#### \textcolor{red}{Modelo 2}
+
+El *Modelo 2* amplía la especificación anterior incorporando un rezago del crecimiento del PIB (\( \Delta Y_{t-1} \)) como regresor adicional. Esta inclusión permite evaluar si el efecto del producto sobre la inversión tiene un componente retardado, es decir, si la inversión responde con rezago a la actividad económica. La ecuación estimada es:
+
+\[
+\Delta I_t = \alpha + \beta_1 \Delta Y_t + \beta_2 \Delta Y_{t-1} + \varepsilon_t
+\]
+
+```{r modelo2-tabla, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+library(kableExtra)
+library(dplyr)
+library(tibble)
+
+# Crear variable rezagada ΔY_{t-1}
+datos_cambios <- datos_cambios %>%
+  mutate(dlog_y_lag1 = lag(dlog_y))
+
+# Estimar Modelo 2: ΔIt = α + β1 ΔYt + β2 ΔY_{t-1} + εt
+modelo_2 <- lm(dlog_i ~ dlog_y + dlog_y_lag1, data = datos_cambios)
+
+# Crear tabla como objeto
+tabla_modelo_2 <- summary(modelo_2)$coefficients %>%
+  round(4) %>%
+  as.data.frame() %>%
+  rownames_to_column("Variable") %>%
+  kable(format = "latex", booktabs = TRUE,
+        caption = "Modelo 2: Regresión de la tasa de crecimiento de la inversión sobre el crecimiento contemporáneo y rezagado del PIB.",
+        col.names = c("Variable", "Coeficiente", "Error estándar", "Estadístico t", "Valor p"),
+        align = "c") %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"))
+
+# Mostrar tabla
+tabla_modelo_2
+```
+
+En el Modelo 2 se observa que el coeficiente del crecimiento del PIB (\( \Delta Y_t \)) permanece altamente significativo y con magnitud similar al Modelo 1. Sin embargo, el coeficiente del rezago (\( \Delta Y_{t-1} \)) no resulta estadísticamente significativo, con un valor \( p \) de 0.6222. Esto sugiere que la inversión responde principalmente al dinamismo actual de la actividad económica, sin evidencia clara de un efecto retardado por parte del PIB. El modelo confirma la prociclicidad de la inversión en el corto plazo.
+
+#### \textcolor{red}{Modelo 3}
+
+El *Modelo 3* evalúa si la tasa de interés real ex post tiene poder predictivo sobre la inversión privada. De acuerdo con la teoría, una tasa de interés más alta debería desalentar la inversión. Por tanto, se espera un coeficiente negativo. La especificación es:
+
+\[
+\Delta I_t = \alpha + \beta_1 r^*_t + \varepsilon_t
+\]
+
+```{r modelo3-tabla, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+library(kableExtra)
+library(dplyr)
+library(tibble)
+library(lubridate)
+
+# Asegurarse que ambas fechas coincidan al primer día del trimestre
+datos_modelo3 <- datos_cambios %>%
+  mutate(fecha_trim = floor_date(fecha, unit = "quarter"))
+
+tasas_trim_limpia <- tasas_trimestral %>%
+  mutate(fecha_trim = floor_date(fecha, unit = "quarter")) %>%
+  select(fecha_trim, tasa_real_expost)
+
+# Hacer join por fecha_trim
+datos_modelo3 <- datos_modelo3 %>%
+  left_join(tasas_trim_limpia, by = "fecha_trim")
+
+# Estimar Modelo 3
+modelo_3 <- lm(dlog_i ~ tasa_real_expost, data = datos_modelo3)
+
+# Crear tabla como objeto
+tabla_modelo_3 <- summary(modelo_3)$coefficients %>%
+  round(4) %>%
+  as.data.frame() %>%
+  rownames_to_column("Variable") %>%
+  kable(format = "latex", booktabs = TRUE,
+        caption = "Modelo 3: Regresión de la tasa de crecimiento de la inversión sobre la tasa de interés real ex post.",
+        col.names = c("Variable", "Coeficiente", "Error estándar", "Estadístico t", "Valor p"),
+        align = "c") %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"))
+
+# Mostrar tabla
+tabla_modelo_3
+```
+
+El Modelo 3 muestra que el coeficiente asociado a la tasa de interés real ex post es positivo (0.0367), pero no resulta estadísticamente significativo (\(p = 0.3033\)). Esto indica que, en esta especificación, la tasa real ex post no tiene un efecto claro sobre la tasa de crecimiento de la inversión privada. Aunque la teoría económica sugiere una relación negativa entre tasas reales altas y menores niveles de inversión (vía costo de oportunidad), estos resultados para México no apoyan dicha hipótesis de forma contundente.
+
+#### \textcolor{red}{Modelo 4}
+
+El *Modelo 4* extiende el anterior al incorporar un rezago de la tasa de interés real ex post (\( r^*_{t-1} \)). Esto permite evaluar si los efectos de las condiciones financieras sobre la inversión actúan con retardo, como sugiere la teoría macro. La especificación es:
+
+\[
+\Delta I_t = \alpha + \beta_1 r^*_t + \beta_2 r^*_{t-1} + \varepsilon_t
+\]
+
+```{r modelo4-tabla, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+library(kableExtra)
+library(dplyr)
+library(tibble)
+library(lubridate)
+
+# Asegurar alineación de fechas por trimestre
+datos_modelo4 <- datos_cambios %>%
+  mutate(fecha_trim = floor_date(fecha, unit = "quarter"))
+
+tasas_trim_limpia <- tasas_trimestral %>%
+  mutate(fecha_trim = floor_date(fecha, unit = "quarter")) %>%
+  select(fecha_trim, tasa_real_expost)
+
+# Join para obtener tasa real
+datos_modelo4 <- datos_modelo4 %>%
+  left_join(tasas_trim_limpia, by = "fecha_trim") %>%
+  arrange(fecha_trim) %>%
+  mutate(tasa_real_expost_lag1 = lag(tasa_real_expost))
+
+# Estimar Modelo 4
+modelo_4 <- lm(dlog_i ~ tasa_real_expost + tasa_real_expost_lag1, data = datos_modelo4)
+
+# Crear tabla como objeto
+tabla_modelo_4 <- summary(modelo_4)$coefficients %>%
+  round(4) %>%
+  as.data.frame() %>%
+  rownames_to_column("Variable") %>%
+  kable(format = "latex", booktabs = TRUE,
+        caption = "Modelo 4: Regresión de la tasa de crecimiento de la inversión sobre la tasa de interés real ex post y su rezago.",
+        col.names = c("Variable", "Coeficiente", "Error estándar", "Estadístico t", "Valor p"),
+        align = "c") %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"))
+
+# Mostrar tabla
+tabla_modelo_4
+```
+
+En el Modelo 4, tanto la tasa de interés real ex post como su rezago resultan significativos, aunque con signos opuestos. El coeficiente del periodo t es negativo (-0.236) y significativo (\(p = 0.022\)), en línea con la teoría, indicando que tasas reales altas desincentivan la inversión. Sorprendentemente, el rezago de la tasa real ex post tiene un coeficiente positivo y también significativo, sugiriendo posibles efectos de reversión o de ajuste diferido.
+
+
+#### \textcolor{red}{Modelo 5}
+
+El *Modelo 5* analiza si existe persistencia en el comportamiento de la inversión, incorporando como regresor el rezago de la tasa de crecimiento de la inversión privada (\( \Delta I_{t-1} \)). Esta especificación permite evaluar si las decisiones de inversión actuales están influenciadas por su propia dinámica pasada. La ecuación estimada es:
+
+\[
+\Delta I_t = \alpha + \beta_1 \Delta I_{t-1} + \varepsilon_t
+\]
+
+```{r modelo5-tabla, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+library(dplyr)
+library(kableExtra)
+library(tibble)
+
+# Crear el rezago de la inversión (ΔI_{t-1})
+datos_modelo5 <- datos_cambios %>%
+  mutate(dlog_i_lag1 = lag(dlog_i))
+
+# Estimar Modelo 5: ΔIt = α + β1 ΔI_{t-1} + εt
+modelo_5 <- lm(dlog_i ~ dlog_i_lag1, data = datos_modelo5)
+
+# Crear tabla como objeto
+tabla_modelo_5 <- summary(modelo_5)$coefficients %>%
+  round(4) %>%
+  as.data.frame() %>%
+  rownames_to_column("Variable") %>%
+  kable(format = "latex", booktabs = TRUE,
+        caption = "Modelo 5: Regresión de la tasa de crecimiento de la inversión sobre su propio rezago.",
+        col.names = c("Variable", "Coeficiente", "Error estándar", "Estadístico t", "Valor p"),
+        align = "c") %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"))
+
+# Mostrar tabla
+tabla_modelo_5
+```
+
+El Modelo 5 muestra que el rezago de la tasa de crecimiento de la inversión privada (\( \Delta I_{t-1} \)) es positivo y estadísticamente significativo (\(p = 0.041\)). El coeficiente estimado (0.169) sugiere una moderada persistencia en la inversión: un mayor crecimiento en el periodo anterior tiende a asociarse con un mayor crecimiento en el periodo actual. Este resultado es consistente con la idea de ajuste gradual del capital o fricciones de inversión que generan inercia en las decisiones de inversión privada.
+
+#### \textcolor{red}{Modelo 6}
+
+El *Modelo 6* incorpora simultáneamente el crecimiento contemporáneo del PIB (\( \Delta Y_t \)), la tasa de interés real ex post (\( r^*_t \)) y el rezago de la inversión privada (\( \Delta I_{t-1} \)). Esta especificación busca capturar de forma conjunta los efectos cíclicos de la actividad económica, las condiciones financieras actuales y la dinámica propia de la inversión. La ecuación estimada es:
+
+\[
+\Delta I_t = \alpha + \beta_1 \Delta Y_t + \beta_2 r^*_t + \beta_3 \Delta I_{t-1} + \varepsilon_t
+\]
+
+```{r modelo6-tabla, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+library(kableExtra)
+library(dplyr)
+library(tibble)
+library(lubridate)
+
+# Asegurar fechas alineadas
+datos_modelo6 <- datos_cambios %>%
+  mutate(fecha_trim = floor_date(fecha, unit = "quarter"),
+         dlog_i_lag1 = lag(dlog_i)) %>%
+  left_join(
+    tasas_trimestral %>%
+      mutate(fecha_trim = floor_date(fecha, unit = "quarter")) %>%
+      select(fecha_trim, tasa_real_expost),
+    by = "fecha_trim"
+  )
+
+# Estimar Modelo 6: ΔIt = α + β1 ΔYt + β2 r^*_t + β3 ΔIt-1 + εt
+modelo_6 <- lm(dlog_i ~ dlog_y + tasa_real_expost + dlog_i_lag1, data = datos_modelo6)
+
+# Crear tabla como objeto
+tabla_modelo_6 <- summary(modelo_6)$coefficients %>%
+  round(4) %>%
+  as.data.frame() %>%
+  rownames_to_column("Variable") %>%
+  kable(format = "latex", booktabs = TRUE,
+        caption = "Modelo 6: Regresión combinada sobre Delta Y, la tasa real ex post y el rezago de la inversión.",
+        col.names = c("Variable", "Coeficiente", "Error estándar", "Estadístico t", "Valor p"),
+        align = "c") %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"))
+
+# Mostrar tabla
+tabla_modelo_6
+```
+
+El Modelo 6 combina las variables explicativas más relevantes y muestra resultados que podriamos decir que son consistentes con la teoría . El crecimiento contemporáneo del PIB (\( \Delta Y_t \)) tiene un efecto positivo y altamente significativo sobre la inversión, con un coeficiente de 1.35. La tasa de interés real ex post (\( r^*_t \)) presenta un coeficiente negativo (-0.059) y significativo (\( p = 0.021 \)), lo que respalda la idea de que mayores costos financieros desincentivan la inversión. Por último, el rezago de la inversión (\( \Delta I_{t-1} \)) también es significativo, indicando persistencia en el comportamiento inversor. En conjunto, estos resultados confirman que la inversión responde tanto a la actividad económica, como a las condiciones financieras y su propia inercia.
+
+
+### **g)**  
+***Estime otra serie de modelos lineales con el objetivo de averiguar qué variables predicen la tasa de crecimiento de la inversión \( \Delta I_t \): a las especificaciones del inciso anterior, agregue valores corrientes y/o rezagados de la confianza empresarial del INEGI y de la confianza del consumidor elaborada por el INEGI y el Banco de México.***
+
+Para abordar el inciso (g), incorporamos variables adicionales que pueden influir sobre la tasa de crecimiento de la inversión privada, específicamente indicadores de confianza empresarial y del consumidor. Ambas series están disponibles de forma mensual y desestacionalizada: la confianza empresarial desde enero de 2004, y la confianza del consumidor desde abril de 2001, según datos del INEGI y el Banco de México, respectivamente. Dado que nuestra base principal opera a frecuencia trimestral, será necesario convertir ambas series mensuales a formato trimestral para integrarlas al análisis.
+
+```{r cargar-y-unir-confianza, warning=FALSE, message=FALSE, echo=FALSE}
+library(readxl)
+library(dplyr)
+library(lubridate)
+
+# Cargar base de confianza (asumiendo que está en la raíz del proyecto)
+confianza <- read_excel("confianza.xlsx") %>%
+  rename_all(tolower)  # Asegura nombres en minúsculas por consistencia
+
+# Asegurar formato de fecha
+confianza <- confianza %>%
+  mutate(fecha = as.Date(fecha, format = "%d/%m/%Y"))
+
+# Convertir a frecuencia trimestral (promedio trimestral por variable)
+confianza_trim <- confianza %>%
+  mutate(fecha_trim = floor_date(fecha, unit = "quarter")) %>%
+  group_by(fecha_trim) %>%
+  summarise(
+    conf_emp = mean(conf_emp, na.rm = TRUE),
+    conf_cons = mean(conf_cons, na.rm = TRUE)
+  ) %>%
+  ungroup()
+
+# Unir con la base principal de tasas de crecimiento
+datos_confianza <- datos_cambios %>%
+  mutate(fecha_trim = floor_date(fecha, unit = "quarter")) %>%
+  left_join(confianza_trim, by = "fecha_trim")
+
+```
+
+#### \textcolor{red}{Modelo 7}
+
+El *Modelo 7* evalúa el efecto de la confianza empresarial sobre la tasa de crecimiento de la inversión privada. Se utiliza el valor contemporáneo del índice de confianza empresarial publicado por el INEGI, previamente agregado a frecuencia trimestral. Esta especificación permite estimar si el nivel de confianza actual de los empresarios contiene información relevante sobre las decisiones de inversión agregada. La ecuación estimada es:
+
+\[
+\Delta I_t = \alpha + \beta_1 \cdot \text{ConfianzaEmp}_t + \varepsilon_t
+\]
+
+```{r modelo7-confianza-emp, warning=FALSE, message=FALSE, echo=FALSE, results='asis'}
+library(dplyr)
+library(kableExtra)
+library(tibble)
+
+# Estimar Modelo 7
+modelo_7 <- lm(dlog_i ~ conf_emp, data = datos_confianza)
+
+# Crear tabla
+tabla_modelo_7 <- summary(modelo_7)$coefficients %>%
+  round(4) %>%
+  as.data.frame() %>%
+  rownames_to_column("Variable") %>%
+  kable(format = "latex", booktabs = TRUE,
+        caption = "Modelo 7: Regresión de la tasa de crecimiento de la inversión sobre la confianza empresarial contemporánea.",
+        col.names = c("Variable", "Coeficiente", "Error estándar", "Estadístico t", "Valor p"),
+        align = "c") %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"))
+
+# Mostrar tabla
+tabla_modelo_7
+```
+
+El coeficiente estimado para la confianza empresarial contemporánea es positivo (0.2351) y estadísticamente significativo al 5% (\( p = 0.0314 \)). Esto sugiere que un aumento en la percepción empresarial favorable está asociado con un mayor crecimiento en la inversión privada en el mismo trimestre. Aunque el modelo es simple, ofrece evidencia empírica de que la confianza empresarial tiene poder predictivo inmediato sobre el comportamiento de la inversión.
+
+
+
+#### \textcolor{red}{Modelo 8}
+
+El *Modelo 8* extiende la especificación anterior incorporando un rezago trimestral de la confianza empresarial como variable explicativa adicional. Esta inclusión permite evaluar si las expectativas pasadas del sector empresarial también influyen en las decisiones actuales de inversión, lo cual sería consistente con modelos en los que la inversión responde de forma gradual a las condiciones de percepción económica. La ecuación estimada es:
+
+\[
+\Delta I_t = \alpha + \beta_1 \cdot \text{ConfianzaEmp}_t + \beta_2 \cdot \text{ConfianzaEmp}_{t-1} + \varepsilon_t
+\]
+
+```{r modelo8-confianza-emp-rezago, warning=FALSE, message=FALSE, echo=FALSE, results='asis'}
+library(dplyr)
+library(kableExtra)
+library(tibble)
+
+# Crear variable rezagada
+datos_confianza <- datos_confianza %>%
+  arrange(fecha_trim) %>%
+  mutate(conf_emp_lag1 = lag(conf_emp))
+
+# Estimar Modelo 8
+modelo_8 <- lm(dlog_i ~ conf_emp + conf_emp_lag1, data = datos_confianza)
+
+# Crear tabla del modelo
+tabla_modelo_8 <- summary(modelo_8)$coefficients %>%
+  round(4) %>%
+  as.data.frame() %>%
+  rownames_to_column("Variable") %>%
+  kable(format = "latex", booktabs = TRUE,
+        caption = "Modelo 8: Regresión de la tasa de crecimiento de la inversión sobre la confianza empresarial contemporánea y su rezago.",
+        col.names = c("Variable", "Coeficiente", "Error estándar", "Estadístico t", "Valor p"),
+        align = "c") %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"))
+
+# Mostrar tabla
+tabla_modelo_8
+```
+
+El Modelo 8 revela que tanto el nivel contemporáneo como el rezagado de la confianza empresarial tienen efectos estadísticamente significativos sobre la inversión. El coeficiente contemporáneo es positivo (0.98), indicando que mayor confianza en el trimestre actual impulsa la inversión. Sin embargo, el coeficiente rezagado es negativo (-0.85), lo que sugiere que la confianza alta en el trimestre anterior podría haber anticipado decisiones ya ejecutadas, reduciendo el efecto neto actual.
+
+#### \textcolor{red}{Modelo 9}
+
+El *Modelo 9* examina el impacto de la confianza del consumidor sobre la tasa de crecimiento de la inversión privada. Se utiliza el valor contemporáneo del índice de confianza del consumidor, desestacionalizado y convertido a frecuencia trimestral. Este modelo evalúa si las percepciones de los hogares respecto a la economía general y sus finanzas personales influyen directa o indirectamente en las decisiones de inversión. La ecuación estimada es:
+
+\[
+\Delta I_t = \alpha + \beta_1 \cdot \text{ConfianzaCons}_t + \varepsilon_t
+\]
+
+```{r modelo9-confianza-cons, warning=FALSE, message=FALSE, echo=FALSE, results='asis'}
+library(dplyr)
+library(kableExtra)
+library(tibble)
+
+# Estimar Modelo 9
+modelo_9 <- lm(dlog_i ~ conf_cons, data = datos_confianza)
+
+# Crear tabla del modelo
+tabla_modelo_9 <- summary(modelo_9)$coefficients %>%
+  round(4) %>%
+  as.data.frame() %>%
+  rownames_to_column("Variable") %>%
+  kable(format = "latex", booktabs = TRUE,
+        caption = "Modelo 9: Regresión de la tasa de crecimiento de la inversión sobre la confianza del consumidor contemporánea.",
+        col.names = c("Variable", "Coeficiente", "Error estándar", "Estadístico t", "Valor p"),
+        align = "c") %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"))
+
+# Mostrar tabla
+tabla_modelo_9
+```
+
+El coeficiente estimado para la confianza del consumidor contemporánea es positivo (0.1620), pero no es estadísticamente significativo (\( p = 0.2247 \)). Esto sugiere que, a diferencia de la confianza empresarial, la percepción de los consumidores sobre la situación económica actual no parece tener un efecto inmediato y claro sobre las decisiones de inversión . Este resultado es consistente con la idea de que los consumidores influyen más directamente sobre el consumo que sobre la inversión privada.
+
+#### \textcolor{red}{Modelo 10}
+
+El *Modelo 10* incorpora tanto el valor contemporáneo como el rezago trimestral del índice de confianza del consumidor como predictores del crecimiento de la inversión privada. Esta especificación permite evaluar si las expectativas pasadas de los consumidores ejercen un efecto diferido sobre las decisiones de inversión. Además, permite verificar si existe persistencia informativa en la percepción de los hogares sobre la economía. La ecuación estimada es:
+
+\[
+\Delta I_t = \alpha + \beta_1 \cdot \text{ConfianzaCons}_t + \beta_2 \cdot \text{ConfianzaCons}_{t-1} + \varepsilon_t
+\]
+
+```{r modelo10-confianza-cons-rezago, warning=FALSE, message=FALSE, echo=FALSE, results='asis'}
+library(dplyr)
+library(kableExtra)
+library(tibble)
+
+# Crear rezago de confianza del consumidor
+datos_confianza <- datos_confianza %>%
+  arrange(fecha_trim) %>%
+  mutate(conf_cons_lag1 = lag(conf_cons))
+
+# Estimar Modelo 10
+modelo_10 <- lm(dlog_i ~ conf_cons + conf_cons_lag1, data = datos_confianza)
+
+# Crear tabla con resultados
+tabla_modelo_10 <- summary(modelo_10)$coefficients %>%
+  round(4) %>%
+  as.data.frame() %>%
+  rownames_to_column("Variable") %>%
+  kable(format = "latex", booktabs = TRUE,
+        caption = "Modelo 10: Regresión de la tasa de crecimiento de la inversión sobre la confianza del consumidor contemporánea y su rezago.",
+        col.names = c("Variable", "Coeficiente", "Error estándar", "Estadístico t", "Valor p"),
+        align = "c") %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"))
+
+# Mostrar tabla
+tabla_modelo_10
+```
+
+El Modelo 10 indica que tanto el nivel contemporáneo como el rezago de la confianza del consumidor tienen un efecto significativo sobre el crecimiento de la inversión. El coeficiente contemporáneo es positivo (1.2887), mientras que el rezago muestra un efecto negativo (-1.3127), ambos altamente significativos con \( p < 0.001 \). Esta combinación sugiere una dinámica temporal similar a la observada en la confianza empresarial: los niveles actuales de optimismo impulsan la inversión, pero parte de ese efecto podría haber sido anticipado en periodos anteriores, generando un ajuste a la baja en el presente.
+
+### **h)**  
+***Estime otra serie de modelos lineales con el objetivo de averiguar qué variables predicen la tasa de crecimiento de la inversión \( \Delta I_t \): a las especificaciones del inciso anterior, agregue valores corrientes y/o rezagados del crecimiento del Índice de Precios y Cotizaciones de la Bolsa Mexicana de Valores.***
+
+Para el inciso (h), se utilizará el índice de precios y cotizaciones (IPC) general de la Bolsa Mexicana de Valores, disponible en frecuencia mensual desde enero de 1988. Este indicador representa un índice compuesto del mercado accionario mexicano con base 1978 = 100. Dado que el año base no afecta los resultados al trabajar con tasas de crecimiento, se transformará esta serie a variaciones logarítmicas trimestrales. Posteriormente, se integrará a la base consolidada de inversión privada para estimar modelos lineales que incorporen los valores contemporáneos y rezagados del crecimiento del IPC como posibles determinantes del crecimiento de la inversión.
+
+```{r cargar-ipc-transformar, warning=FALSE, message=FALSE, echo=FALSE}
+library(readxl)
+library(dplyr)
+library(lubridate)
+
+# Cargar base de precios y cotizaciones
+precios_cotiz <- read_excel("precios_cotiz.xlsx") %>%
+  mutate(fecha = as.Date(fecha),
+         trimestre = paste0(year(fecha), "T", quarter(fecha))) %>%
+  group_by(trimestre) %>%
+  summarise(ip_cotiz = mean(ip_cotiz, na.rm = TRUE)) %>%
+  arrange(trimestre) %>%
+  mutate(ip_cotiz_lag = lag(ip_cotiz),
+         dlog_ipc = 100 * (log(ip_cotiz) - log(ip_cotiz_lag))) %>%
+  filter(!is.na(dlog_ipc))
+
+# Unir con datos_confianza (o la base principal donde esté dlog_i)
+datos_ipc <- datos_confianza %>%
+  mutate(trimestre = paste0(year(fecha_trim), "T", quarter(fecha_trim))) %>%
+  left_join(precios_cotiz %>% select(trimestre, dlog_ipc), by = "trimestre")
+```
+
+#### \textcolor{red}{Modelo 11}
+
+El *Modelo 11* evalúa el efecto del crecimiento contemporáneo del índice de precios y cotizaciones (IPC) sobre la tasa de crecimiento de la inversión privada. El crecimiento bursátil puede reflejar expectativas empresariales positivas y condiciones financieras más favorables, lo cual podría incentivar decisiones de inversión. El índice se transformó en tasas logarítmicas trimestrales a partir de su versión mensual. La especificación estimada es:
+
+\[
+\Delta I_t = \alpha + \beta_1 \cdot \Delta IPC_t + \varepsilon_t
+\]
+
+```{r modelo11-ipc-contemporaneo, warning=FALSE, message=FALSE, echo=FALSE, results='asis'}
+library(dplyr)
+library(kableExtra)
+library(tibble)
+
+# Modelo 11: regresión de la inversión sobre el crecimiento contemporáneo del IPC
+modelo_11 <- lm(dlog_i ~ dlog_ipc, data = datos_ipc)
+
+# Crear tabla
+tabla_modelo_11 <- summary(modelo_11)$coefficients %>%
+  round(4) %>%
+  as.data.frame() %>%
+  rownames_to_column("Variable") %>%
+  kable(format = "latex", booktabs = TRUE,
+        caption = "Modelo 11: Regresión de la tasa de crecimiento de la inversión sobre el crecimiento contemporáneo del índice bursátil (IPC).",
+        col.names = c("Variable", "Coeficiente", "Error estándar", "Estadístico t", "Valor p"),
+        align = "c") %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"))
+
+# Mostrar tabla
+tabla_modelo_11
+
+```
+
+El Modelo 11 indica que el crecimiento contemporáneo del índice bursátil tiene un efecto positivo y estadísticamente significativo sobre la tasa de crecimiento de la inversión privada. El coeficiente estimado de 0.1159 sugiere que un aumento de 1 punto porcentual en el crecimiento del IPC se asocia con un incremento de aproximadamente 0.12 puntos porcentuales en la inversión. Este resultado es coherente con la hipótesis de que un mayor dinamismo en los mercados financieros refleja expectativas favorables que pueden estimular la inversión.
+
+#### \textcolor{red}{Modelo 12}
+
+El *Modelo 12* amplía la especificación anterior incorporando, además del crecimiento contemporáneo del índice bursátil, su valor rezagado un trimestre. Esto permite captar posibles efectos retardados de las condiciones del mercado financiero sobre la inversión privada. La hipótesis es que los agentes podrían responder con rezago a señales del mercado accionario. La especificación estimada es:
+
+\[
+\Delta I_t = \alpha + \beta_1 \cdot \Delta IPC_t + \beta_2 \cdot \Delta IPC_{t-1} + \varepsilon_t
+\]
+
+```{r modelo12-ipc-rezago, warning=FALSE, message=FALSE, echo=FALSE, results='asis'}
+# Crear variable rezagada del crecimiento del IPC
+datos_ipc <- datos_ipc %>%
+  arrange(trimestre) %>%
+  mutate(dlog_ipc_lag1 = lag(dlog_ipc))
+
+# Estimar Modelo 12
+modelo_12 <- lm(dlog_i ~ dlog_ipc + dlog_ipc_lag1, data = datos_ipc)
+
+# Tabla de resultados
+tabla_modelo_12 <- summary(modelo_12)$coefficients %>%
+  round(4) %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column("Variable") %>%
+  kable(format = "latex", booktabs = TRUE,
+        caption = "Modelo 12: Regresión de la tasa de crecimiento de la inversión sobre el crecimiento contemporáneo y rezagado del índice bursátil (IPC).",
+        col.names = c("Variable", "Coeficiente", "Error estándar", "Estadístico t", "Valor p"),
+        align = "c") %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"))
+
+# Mostrar tabla
+tabla_modelo_12
+```
+
+El Modelo 12 revela que tanto el crecimiento contemporáneo como el rezagado del índice bursátil (IPC) tienen un efecto positivo sobre la tasa de crecimiento de la inversión privada. El coeficiente asociado al valor contemporáneo es significativo al 5%, mientras que el del rezago es significativo al 10%. Esto sugiere que los movimientos recientes en el mercado accionario tienen un impacto inmediato y ligeramente retardado en la inversión.
+
+
+
+### **i)**  
+***Interprete los resultados.***
+
+```{r tabla-modelos-resumen-final, warning=FALSE, message=FALSE, echo=FALSE, results="asis"}
+library(kableExtra)
+
+tabla_modelos <- data.frame(
+  Modelo = 1:12,
+  Especificacion = c(
+    "$\\Delta I_t \\sim \\Delta Y_t$",
+    "$\\Delta I_t \\sim \\Delta Y_t, \\Delta Y_{t-1}$",
+    "$\\Delta I_t \\sim r_t - \\pi_t$",
+    "$\\Delta I_t \\sim r_t - \\pi_t, (r_t - \\pi_t)_{t-1}$",
+    "$\\Delta I_t \\sim \\Delta I_{t-1}$",
+    "$\\Delta I_t \\sim \\Delta Y_t, r_t - \\pi_t, \\Delta I_{t-1}$",
+    "$\\Delta I_t \\sim ConfEmp_t$",
+    "$\\Delta I_t \\sim ConfEmp_t, ConfEmp_{t-1}$",
+    "$\\Delta I_t \\sim ConfCons_t$",
+    "$\\Delta I_t \\sim ConfCons_t, ConfCons_{t-1}$",
+    "$\\Delta I_t \\sim \\Delta IPC_t$",
+    "$\\Delta I_t \\sim \\Delta IPC_t, \\Delta IPC_{t-1}$"
+  ),
+  Variables_significativas = c(
+    "$\\Delta Y_t$", "$\\Delta Y_t$", "Ninguna",
+    "$r_t - \\pi_t$, $(r_t - \\pi_t)_{t-1}$",
+    "$\\Delta I_{t-1}$",
+    "$\\Delta Y_t$, $r_t - \\pi_t$, $\\Delta I_{t-1}$",
+    "$ConfEmp_t$", "$ConfEmp_t$, $ConfEmp_{t-1}$",
+    "Ninguna", "$ConfCons_t$, $ConfCons_{t-1}$",
+    "$\\Delta IPC_t$", "$\\Delta IPC_t$"
+  ),
+  R2 = c(0.61, 0.61, 0.02, 0.08, 0.12, 0.64, 0.05, 0.34, 0.03, 0.42, 0.07, 0.12),
+  Signo = c("Sí", "Sí", "No", "Sí/No", "Sí", "Sí", "Sí", "Sí/No", "No", "Sí/No", "Sí", "Sí")
+)
+
+tabla_resumen <- kable(tabla_modelos,
+                       format = "latex", booktabs = TRUE, align = "c",
+                       col.names = c("Modelo", "Especificación", "Variable(s) significativa(s)", "$R^2$", "Signo esperado"),
+                       caption = "Resumen de los modelos de regresión estimados (Modelos 1 al 12)",
+                       escape = FALSE) %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"))
+
+tabla_resumen
+```
+
+Los resultados muestran que el crecimiento del PIB es el predictor más sólido y consistente del crecimiento de la inversión privada, siendo estadísticamente significativo en todos los modelos en los que está presente (Modelos 1, 2 y 5–6), con un poder explicativo notable (\( R^2 \) cercano a 0.6). Esto sugiere que los factores vinculados al ciclo económico desempeñan un papel clave en la dinámica de la inversión.. Por su parte, la tasa de interés real ex post presenta efectos más débiles: no es significativa por sí sola (Modelo 3), pero cobra relevancia cuando se incluye en modelos multivariados junto con rezagos de inversión y crecimiento económico (Modelo 6).
+
+Respecto a las variables de confianza, los resultados muestran cierta capacidad explicativa, aunque más limitada. La confianza empresarial contemporánea aparece como significativa en el Modelo 7, y su efecto persiste incluso cuando se incluye su rezago (Modelo 8), aunque con signos opuestos. En contraste, la confianza del consumidor solo resulta significativa cuando se combinan los niveles actuales y pasados (Modelo 10). Finalmente, el comportamiento del índice bursátil también muestra correlación positiva con la inversión (Modelos 11 y 12), lo cual puede reflejar condiciones financieras amplias o expectativas de mercado. 
+
+En general, los resultados obtenidos son intuitivos y coherentes con la teoría de la inversión discutida en modelos vistos en clase, donde el comportamiento de la inversión responde tanto a las expectativas sobre la rentabilidad del capital como a los costos de financiamiento. *La fuerte relación entre el PIB y la inversión es consistente con mecanismos tipo **acelerador*, donde un aumento en la demanda induce a las empresas a ampliar su capacidad instalada. Asimismo, la limitada relevancia estadística de la tasa de interés real ex post en modelos individuales, pero su significancia en especificaciones multivariadas, sugiere que su efecto sobre la inversión está mediado por otros factores macroeconómicos. La inclusión de variables como la confianza empresarial y los indicadores bursátiles permite capturar elementos adicionales de expectativas y percepción del entorno económico, aspectos que algunas extensiones modernas de los modelos neoclásicos y de Tobin-\(q\) también intentan formalizar.
+
+
+## **Ejercicio 3 **
+Estudie la habilidad de modelo de la q de Tobin para explicar las tasas de inversión de empresas individuales, siguiendo estos pasos [4 horas, 0.5 puntos cada inciso]:
+
+### **a)**  
+**Con el propósito de desarrollar intuición sobre la existencia y fuente de los datos corporativos, vaya al sitio de internet de algún corporativo mexicano (de su elección, distinto por equipo...) y obtenga varios reportes anuales. De ahí, obtenga el valor de los activos menos los pasivos (excepto el ‘capital’) y con ello construya una serie del “valor en libros” de la empresa. Posteriormente, de dicho reporte, o del sitio de la BMV o de la BIVA, obtenga el “valor de capitalización” de mercado de la misma empresa y finalmente construya la variable “q’” (es la “q” promedio) como la razón de dichos valores. Determine si el valor de “q’” es relativamente “alto” o “bajo” en cada período.**
+
+Para realizar el presente ejercicio se eligió analizar a la empresa
+**GRUMA**: "Empresa de alimentos, orgullosamente mexicana, líder en la
+producción de harina de maíz, tortillas y wraps. Con operaciones en
+America, Europa, Asia y Oceania que le dan una presencia en más de 110
+paises".
+
+Durante la fase de recolección de datos se encontró que la empresa ha
+cotizado en la Bolsa Mexicana de Valores (BMV) desde 1994, además de que
+cotizó en la Bolsa de Nueva York (NYSE) entre los años 1998 y 2015. En
+su situo web se pudieron encontrar reportes financieros anuales que se
+remontaban al año 2002, destaca que el reporte del año 2002 contenía la
+información financiera correspondiente al periodo 1998 - 2002, por lo
+que se pudo utilizar esta información para expandir el periodo
+analizado. Encontramos que, a través del tiempo, la empresa ha ido
+cambiando su formato de reporte de información financiera, ya que antes
+del 2002 se empleaban los PCGA Mexicanos, mientras que en el periodo
+2003-2010 la informaión se apegaba a las NIF mexicanas, a partir de 2011
+se han empleado las normas financieras internacionales NIIF.
+Adicionalmente, a partir del año 2022 la reportes se empezaron a emitir
+considerando precios en dólares, sin emabrgo en cada reporte se
+especificó el tipo de cambio aplicable. De este modo se construyó una
+base de datos para el periodo 1999-2023.
+
+```{r base, echo=FALSE, include=FALSE}
+
+# cargamos la base de datos que hemos construido a partir de los reportes anuales y Yahoo Finance
+bd<- read_csv("gruma informacion 1999-2023.csv")
+```
+
+El Market Cap, o valor de mercado fue calculado multiplicando el numero
+de acciones en circulación de la empresa al 31 de diciembre del año
+correspondiente, por el valor de la acción en pesos según la BMV a la
+misma fecha.
+
+$$
+\mathrm{Market~Cap}_{t} = {Acciones~Circulando}_{t} \times {Stock~Price}_t
+$$ Para obtener la **q** promedio se calculó la razón entre el Capital
+Contable de la empresa y el Market Cap para cada uno de los años,
+obteniendo los siguientes resultados:
+
+\newpage
+
+```{r q promedio, message=FALSE, warning=FALSE, echo=FALSE, results='asis'}
+# Librerías necesarias
+library(knitr)
+library(kableExtra)
+library(dplyr)
+
+# Seleccionar columnas
+tabla_razon_q <- bd %>%
+  select(anio, razon_q)
+
+# Crear tabla en LaTeX
+tabla_q <- kbl(tabla_razon_q, 
+               format = "latex", 
+               caption = "Tabla 1. Razón \\( q \\) de Tobin por año",
+               col.names = c("Año", "Razón \\( q \\)"), 
+               digits = 2, 
+               align = "c",
+               booktabs = TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "striped", "scale_down"),
+                full_width = FALSE, 
+                position = "center") %>%
+  footnote(general = "Fuente: Elaboración propia.")
+
+# Imprimir tabla
+tabla_q
+
+
+```
+
+Se puede obervar una rendencia clara en el indicador de la razón q de la
+empresa a través del tiempo, como es que ha pasado de ser mositiva,
+idnicando un alto valor de la invresión que debería traducrise en un
+icnremento de esta desde finales de los 90's hasta mediandos de los
+2000, hasta niveles menores a la unidad a partir de la crisis de 2008.
+En este año la empresa se enfrentó a grandes perdidas que obligaron a la
+reestructuración de la empresa; combinado con la expropiación de sus
+plantas en Venezuela lo que originó un juicio internacional que se ha
+extendido hasta nuestros días. Destacan años como 2015 en el cual la
+**q** es sumamente baja e indica la necesidad expedita de desinversión
+de parte de la empresa.
+
+
+### **b)**  
+**Construya una medida (no necesariamente muy buena) de “i” de las empresas utilizando varios reportes corporativos consecutivos, y calcule en qué porcentaje aumentó la "propiedad, planta y equipo" de la empresa o alternativamente los “activos fijos” de la empresa.**
+
+En este ejercicio se identificó una inconsistencia, y es que la partida
+"Propiedad, planta y equipo netos" de la empresa representa el strock de
+bienes de capital disponibles por la empresa, su variación en el tiempo
+incluye la depreciación de estos, además de que está supeditado a su
+cambio de valor. Estos efectos hacían que hubiera años en los que la
+variación del valor de esta partida sugería que había habido inversiones
+negativas, lo cual es imposible. Por ello, se optó por utilizar una
+medida alternativa de la inversión, la cual está condicionada por la
+información disponible:
+
+$$
+\mathrm{Inversion(i)}_{t} = \frac{CAPEX_{t}}{Activos Totales_{t}} \times 100
+$$ 
+
+Por lo tanto, la tasa de inversión estimada para cada uno de los
+periodos es:
+
+\newpage
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, results='asis'}
+# Librerías necesarias
+library(knitr)
+library(kableExtra)
+library(dplyr)
+
+# Crear base seleccionada
+tabla_i <- bd %>%
+  select(anio, i = i_capexasset)
+
+# Crear tabla en LaTeX
+tabla_i_kable <- kbl(tabla_i,
+                     format = "latex",
+                     caption = "Tabla 2. Tasa de inversión por año",
+                     col.names = c("Año", "Tasa de inversión"),
+                     digits = 2,
+                     align = "c",
+                     booktabs = TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "striped", "scale_down"),
+                full_width = FALSE,
+                position = "center") %>%
+  footnote(general = "Fuente: Elaboración propia.")
+
+# Mostrar tabla
+tabla_i_kable
+```
+
+Vemos que la tasa de inversión se ha manetnido en niveles relativamente bajos, inferiores al 10% en practicamente la totalidad del periodo analizado. Del mismo modo, pareciaera que a partir del 2000 los niveles de inversión han sido relativamente menores a los del periodo inmediato anterior. 
+
+\newpage
+### **c)**  
+**Estime los coeficientes de una relación lineal entre la tasa de inversión en un período y la “q’” en el mismo y también de una relación utilizando la “q’” del período inmediato anterior.**
+
+Una de las predicciones fundamentales del modelo de costo de capital es que existe una relación positiva
+entre la inversión y el nivel de q, por lo tanto esperamos encontrar un coeficiente positivo B > 0 para la empresa en el periodo 1998-2023.
+
+De esta forma, el modelo quedaría especificado de la siguiente manera:
+
+$$
+\mathrm{Inversion}_t = \alpha + \beta_1 {q_t} + \varepsilon_t
+$$ Del mismo modo se nos solicitó estimar el modelo con un rezago en la
+q de tobin, indicando el tiempo que toma en realizarce la inversión, por
+lo tanto el modelo en este caso sería
+
+$$
+\mathrm{Inversion}_t = \alpha + \beta_1 {q}_{t-1} + \varepsilon_t
+$$
+```{r , message=FALSE, warning=FALSE, echo=FALSE, results='asis'}
+#Creamos una nueva variable con lag de 1 periodo 
+bd$razonq_lag <- lag(bd$razon_q, n=1)
+bd$inversion <- bd$i_capexasset
+
+
+# Modelos de regresión (I=Capex/activos)
+modelo <- lm(inversion ~ razon_q, data = bd)
+modelo_lag <- lm(inversion ~ razonq_lag, data = bd)
+
+# Comparamos los resultados  
+stargazer(modelo, modelo_lag, type = "latex", title = "Modelos tasa de inversion y q de tobin")
+
+
+```
+
+
+Como podemos observar, el coeficiente de las beta es positivo en ambos
+casos, lo cual indica que a medida que aumenta el valor de q, las
+empresas aumentan su inversión hasta que simplemente son indiferentes
+entre instalar una unidad adicional de capital y pagar su costo en forma
+de dividendos más altos. Es decir, que se cumpla la condición. $$
+\mathrm{1+C'} = \alpha + \beta*( {q-1}) + \varepsilon_t
+$$ Destaca que en nuestro caso, la beta estimada fue de 0.577, 
+mucho mas alto al encotrado por Summers, 1981; lo cual indica que esta
+empresa tiene una sensibilidad mucho mayor a las variaciones en q al
+momento de invertir. Si bien los resultados no son significativo y la R
+cuadrada es muy baja, dada la limitación en el acceso a la información
+nde la empresa se considera que este es un estimado consistente con la
+teoría.
+
+### **d)**  
+**Produzca un estimado del coeficiente del costo de ajuste a partir de las regresiones anteriores.**
+
+Siguiendo a Summers (1981) se asume que el costo marginal de ajuste
+aumenta linealmente con la inversión. La relación empírica estimada
+entre inversión y q se puede resolver para encontrar los parámetros de
+la función subyacente de costo de ajuste. Partiendo de la especificación
+de nuestro modelo:
+
+Partiendo de la especificación de nuestro modelo:
+
+$$
+I_i = c + \beta (q_i - 1) + \epsilon_i
+$$
+
+y dado $\epsilon \sim \mathcal{N}(0, \sigma^2)$, al hacer la estimación
+podemos reescribir:
+
+$$
+I_i = \hat{\beta}(q_i - 1)
+$$
+Recordando que $I_i = \%\Delta \text{Activos}$ y entendiendo la relación
+lineal del costo marginal con la inversión como
+$C'(I_i) = b \times I_i$, podemos interpretar nuestro estimador como
+$\hat{\beta} = \frac{1}{b}$.
+
+Despejando para $q_i$:
+
+$$
+1 + b \times \% \Delta \text{Activos} = q_i
+$$
+
+Se puede interpretar el cambio porcentual de los activos de la empresa
+como un proxy de la relación entre el movimiento de la inversión en el
+tiempo respecto al capital de la empresa $\frac{I_i}{k_i}$.
+
+Esto cumple la forma de la ecuación de la $q$ de Tobin cuando el costo
+marginal de la inversión sigue una relación lineal con un coeficiente:
+
+$$
+1 + b \times \frac{I_i}{k_i} = q_i = 1 + C'(I_i)
+$$
+Por lo tanto se puede interpretar nuestra $\beta$ estimada como el
+inverso del coeficiente de ajuste, donde:
+
+$$
+\beta^{-1} = b
+$$
+
+$b$ = Coeficiente del costo de ajuste.
+
+```{r B-1, message=FALSE, warning=FALSE, echo=FALSE, include=FALSE}
+# Extraer el coeficiente beta (el que corresponde a razonq_lag)
+beta <- coef(modelo_lag)["razonq_lag"]
+
+# Elevar a la potencia -1
+beta_inv <- beta^(-1)
+
+beta_inv
+```
+
+De este modo, por ejemplo, en el caso de nuestra empresa se ha estimado
+que: $$
+\ {b} = 37.71
+$$
+
+### **e)**  
+**Explique, suponiendo que la función de costo de ajuste es cuadrática (es decir \(C_t = b(I_t/K_t)^2 K_t\)), qué implican los resultados de sus regresiones sobre el costo de ajuste relativo al capital total para una inversión de 50% del capital total y qué implican los resultados para el tiempo que le tomaría a una empresa recorrer la mitad del camino entre el capital que tiene, \(K\), y el que quisiera tener \(K^*\).**
+
+Dada la función de costos cuadratica: $$
+C_t = b \frac{I(t)^2}{k(t)}
+$$
+
+Bajo el supuesto de la función de costos de ajuste cuadrática, el costo
+marginal de ajuste tiene la forma:
+
+$$
+C'(t) = 2b \frac{I(t)}{k(t)}
+$$
+Por lo que la expresión $1 + C'(I_t) = q_t$ tiene la forma:
+
+$$
+1 + 2b \frac{I(t)}{k(t)} = q_t
+$$
+
+Reacomodando:
+
+$$
+\frac{I(t)}{k(t)} = \frac{1}{2b} (q(t) - 1)
+$$
+Sea $\frac{I_i}{K_t} = I$ donde $I$, es nuestra medida de inversión
+desarrollada en el inciso a) y donde $\beta = \frac{1}{b}$, fue estimada
+en el inciso anterior de la forma:
+
+$$
+I = c + \beta (q - 1) + \epsilon
+$$ Estimaremos las implicaciones del modelo de coste de ajuste para una
+inversión del 30% del capital total:
+
+$$
+\ {I} =5.729 + 0.02652(q)
+$$ Teniendo $I_1= 0.30$ podemos resolver para $q$
+
+Habíamos estimado previamente que: $$
+\ {b} = 37.71
+$$
+
+Si la inversión es 50% del capital, entonces $I/K=0.50$; sustitutendo en
+la función de costos original $C=37.71*(0.5)^2*K$, llegamos a
+$C=9.43 *K$. El costo de ajustar el capital sería aproximadamente un
+9.43% del tamaño del capital existente. Es decir, hacer una inversión
+equivalente al 50% del capital tendría un costo de ajuste muy
+significativo en proporción al tamaño de la empresa.Lo cual hace sentido
+ya que es una industria que se ha ido quedando rezagada y que implica
+grandes inversiones dada su naturaleza intensiva en capital físico.
+Ahora, su implicación en tiempos de ajuste es que, dado que hemos
+estimado una b muy alta, ello anticipa que es una empresa que ajusta su
+capital relativamente lento. La ofmrula que usaremos para estimar la
+distancia entre ${K}$ y $K^*$ será:
+
+$$
+\ (1- \beta)^t  = 0.5
+$$ Sustituyendo: $$
+\ (1- 0.02652)^t  = 0.5
+$$ Tomando logaritmos: $$
+\ t*ln(1- 0.02652)  = ln(0.5)
+$$ $$
+\ t  = 25.10
+$$ Es decir, nuestra empresa tardaría aproximadamente 25 años en
+recorrer la distncia entre su capital actual y su capital óptimo,
+resultado que es más del doble del encontrado por Summers!
+
+
+### **f)**  
+**Escoja dos industrias en EE.UU. y construya la “q’” de cinco corporativos de cada una. Saque el promedio y compárelo para identificar si hay diferencias importantes entre industrias. (La idea es comparar industrias “viejas” con industrias “nuevas”).**
+
+Para este ejercicio se obtuvieron los utltimos datos disponibles de 10
+empresas estadounidenses, 5 de la industria metalurgica y 5 de la
+industria de tecnológica. Estas empresas cotizan la bolsa de Nueva York
+o en el Nasdaq, por lo que todos son gigantes en sus respectivos
+sectores.
+
+
+\newpage
+```{r tabla-empresas, echo=FALSE}
+empresas <- data.frame(
+  Empresa = c(
+    "**Industria metalurgica**",
+    "Nucor Corporation",
+    "Steel Dynamics",
+    "Cleveland-Cliffs Inc.",
+    "United States Steel",
+    "Alcoa Corporation",
+    "**Industria de hardware**",
+    "Apple Inc.",
+    "Microsoft Corp",
+    "Advanced Micro Devices Inc",
+    "Cisco Systems Inc.",
+    "Nvidia Corporation"
+  ),
+  Ticker = c(
+    "",
+    "NUE",
+    "STLD",
+    "CLF",
+    "X",
+    "AA",
+    "",
+    "AAPL",
+    "MSFT",
+    "AMD",
+    "CSCO",
+    "NVDA"
+  )
+)
+
+kable(empresas, align = c("l", "c"), col.names = c("Empresa", "Ticker"), format = "markdown") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), 
+                full_width = F, 
+                position = "center")
+
+```
+
+En este caso, para calcular la q de Tobin promedio se utilizó una aproximación distinta, más apegada a la idea de comparar el valor de mercado total de una empresa con el costo de reemplazar sus activos físicos. Por lo tanto la formula es: 
+
+$$
+\ q = \frac{MarketCap+Deuda}{Activos Totales} 
+$$
+La "q" obtenida para cada una de las empresas es la siguiente:
+
+```{r tabla-empresas-q, echo=FALSE, results='asis'}
+empresas_q <- data.frame(
+  Empresa = c(
+    "**Industria metalurgica**",
+    "Nucor Corporation",
+    "Steel Dynamics",
+    "Cleveland-Cliffs Inc.",
+    "United States Steel",
+    "Alcoa Corporation",
+    "**Industria de hardware**",
+    "Apple Inc.",
+    "Microsoft Corp",
+    "Advanced Micro Devices Inc",
+    "Cisco Systems Inc.",
+    "Nvidia Corporation"
+  ),
+  Ticker = c(
+    "",
+    "0.98",
+    "1.34",
+    "0.59",
+    "0.56",
+    "0.85",
+    "",
+    "10.63",
+    "6.04",
+    "2.86",
+    "2.00",
+    "26.44"
+  )
+)
+
+kable(empresas_q, caption = "q promedio empresas EU", align = c("l", "c"), col.names = c("Empresa", "razón q")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), 
+                full_width = F, 
+                position = "center") %>%
+  footnote(general = "Fuente: Elaboración propia.")
+
+
+
+```
+
+Como podemos observar hay una clara diferencia entre la razón q de las empresas en los dos tipos de industria al grado en el que aun la empresa con la q más alta de la industria sidelurgica tiene un muy inferior a la empresa con la q más baja de la industria tecnologica; esto refleja el comportamiento de estas utlimas empresas a mantener siempre muy altos grados de inversión, podemos pensarlo en terminos de que es una industria fuermente competitiva donde suelen haber disrupciones tecnologicas que suelen dejar fuera a empresas de todos los tamaños, por lo que no pueden permitirse la contracción de sus inversiones. Por su parte la industria metalurgica es una industra mucho más madura, en la cual hay fuertes barreras a la entrada y competencia. Sin duda es una industria mucho menos dinamica en comparación con las tecnológicas de modo que ello explica los valores más bajos encontrados.
+
+```{r tabla-industrias, echo=FALSE, results='asis'}
+empresas_g <- data.frame(
+  Empresa = c(
+    "Metalurgica",
+    "Tecnológica"
+  ),
+  Q = c(
+    "0.86",
+    "9.59"
+  )
+)
+
+kable(empresas_g, caption = "q promedio Industria Vieja/Nuena", align = c("l", "c"), col.names = c("Industria", "q promedio")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), 
+                full_width = F, 
+                position = "center")
+
+```
+
+Los resultados promediados por dinstria son muy claros, hay una mientras que el software y hardware van en auge, la mestalurgica ha alcanzado niveles tales que en el presente tiende a la desinversión. 
+
+### **g)**  
+**Con el fin de desarrollar intuición sobre el impacto de un error de medición en las variables explicativas sobre los coeficientes de una regresión, simule una relación lineal \(Y = a + bX + \varepsilon\) y cree tres variables con error de medición \(X = X^* + e\), \(X = X^* - c \cdot e\) y \(Y = Y + e'\). (Es decir, primero invente una variable \(X\), genere una variable aleatoria \(e\) y con esos datos genere una variable \(Y\). Luego genere dos nuevas \(X\)s, una afectada aleatoriamente por otro error diferente, \(e'\), y otra afectada, de manera NEGATIVA, por el mismo error que incluyó en la simulación de la Y original, y tercero, genere una nueva Y que esté afectada por una tercera variable aleatoria \(e''\). Finalmente, estime varias relaciones lineales: la de Y original, con la X original, la de Y original, con \(X\) y \(X^*\), y la de Y con la X original, explicando cómo cambia el coeficiente en cada caso, y relacionando sus hallazgos con el coeficiente b del inciso anterior.**
+
+\newpage
+
+```{r , message=FALSE, warning=FALSE, echo=FALSE, results='asis'}
+# Cargar librerías
+library(stargazer)
+
+# Configuración
+set.seed(123)
+n <- 1000
+a <- 1
+b <- 37.7  # Valor previamente calculado
+c <- 0.5
+
+# Variable verdadera
+X <- rnorm(n)
+Y <- a + b * X + c
+
+# Modelo sin error
+modelo_original <- lm(Y ~ X)
+
+# Mostrar resultados en LaTeX
+stargazer(modelo_original, type = "latex", title = "Modelo sin error de medición")
+```
+
+```{r , message=FALSE, warning=FALSE, echo=FALSE, results='asis'}
+# Error aleatorio
+error_x <- rnorm(n, mean = 0, sd = 1)
+error_y <- rnorm(n, mean = 0, sd = 1)
+
+# Crear variables afectadas
+X_bar <- X + error_x         # error positivo
+X_tilde <- X - error_x       # error negativo
+Y_bar <- Y + error_y         # Y con error
+
+# Modelos
+modelo_X_bar <- lm(Y ~ X_bar)
+modelo_X_tilde <- lm(Y ~ X_tilde)
+modelo_Y_bar <- lm(Y_bar ~ X)
+
+# Resultados en LaTeX
+stargazer(modelo_X_bar, modelo_X_tilde, modelo_Y_bar,
+          type = "latex",
+          title = "Efecto de errores de medición en X y Y",
+          column.labels = c("X + error", "X - error", "Y + error"))
+```
+
+```{r tabla-kable-modelos, message=FALSE, warning=FALSE, echo=FALSE}
+library(kableExtra)
+library(dplyr)
+library(broom)
+
+# Lista de modelos
+modelos <- list(
+  "Y ~ X_bar" = lm(Y ~ X_bar),
+  "Y ~ X_tilde" = lm(Y ~ X_tilde),
+  "Y_bar ~ X" = lm(Y_bar ~ X),
+  "Y_bar ~ X_bar" = lm(Y_bar ~ X_bar),
+  "Y_bar ~ X_tilde" = lm(Y_bar ~ X_tilde)
+)
+
+# Extraer resumen de cada modelo
+tabla_modelos <- lapply(names(modelos), function(nombre) {
+  mod <- modelos[[nombre]]
+  coef <- tidy(mod)
+  glance <- glance(mod)
+  tibble(
+    Modelo = nombre,
+    Coef_X = coef$estimate[2],
+    SE_X = coef$std.error[2],
+    R2 = glance$r.squared,
+    Adj_R2 = glance$adj.r.squared,
+    N = glance$nobs
+  )
+}) %>% bind_rows()
+
+# Redondear para estética
+tabla_modelos <- tabla_modelos %>%
+  mutate(across(where(is.numeric), ~round(.x, 3)))
+
+# Mostrar tabla con kableExtra
+tabla_modelos %>%
+  kable("latex", booktabs = TRUE, caption = "Resumen de modelos: errores de medición en X y Y") %>%
+  kable_styling(latex_options = c("striped", "hold_position", "scale_down"))
+
+
+```
+
+\newpage
+```{r grafico-pro-b, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Comparación entre coeficientes estimados y el valor real de \\( b = 37.7 \\), bajo diferentes escenarios de error de medición.", fig.align='center', fig.pos='H', out.width='100%'}
+library(ggplot2)
+
+# Datos
+coeficientes <- data.frame(
+  Modelo = c("Y ~ X", "Y ~ X̄", "Y ~ X̃", "Ȳ ~ X", "Ȳ ~ X̄", "Ȳ ~ X̃"),
+  Coef = c(37.700, 18.538, 18.479, 37.681, 18.542, 18.455)
+)
+
+# Gráfico minimalista
+ggplot(coeficientes, aes(x = Modelo, y = Coef)) +
+  geom_col(fill = "steelblue", width = 0.6) +
+  geom_hline(yintercept = 37.7, linetype = "dashed", color = "gray30", linewidth = 0.6) +
+  annotate("text", x = 1, y = 39, label = "b real = 37.7", hjust = 0, color = "gray30", size = 3.5) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
+  labs(y = "Coeficiente estimado", x = NULL) +
+  theme_minimal(base_family = "serif", base_size = 12) +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_text(angle = 0, size = 10),
+    plot.caption = element_text(hjust = 0),
+    plot.title = element_blank()
+  )
+
+```
+
+
+En este ejercicio se analizó el impacto de errores de medición en variables explicativas y dependientes sobre la estimación del coeficiente \\( b \\) en una regresión lineal. Partimos de un modelo base sin errores, donde se obtuvo el valor verdadero \\( b = 37.7 \\). Al introducir error en la variable explicativa \\( X \\), el coeficiente estimado se redujo aproximadamente a la mitad (~18.5), reflejando el conocido sesgo por atenuación. En cambio, al introducir error en la variable dependiente \\( Y \\), el coeficiente se mantuvo cercano al valor verdadero, aunque con mayor varianza.
+
+Cuando ambos tipos de errores estuvieron presentes, los coeficientes se mantuvieron igualmente sesgados hacia valores bajos (~18.5), lo que confirma que el error en \\( X \\) domina en términos de sesgo, mientras que el error en \\( Y \\) afecta principalmente la precisión de la estimación.
+
+
+### **h)**  
+**Estime los coeficientes de una relación lineal entre la tasa de inversión en el período, la “q’” de Tobin en el mismo o en el período inmediatamente anterior, y el flujo de efectivo o las ganancias netas. Interprete sus resultados contrastándolos con los resultados que obtuvo anteriormente.**
+
+Para este ejercicio volvimos a revisar los reportes anuales de la empresa GRUMA desde 2002, sin emabrgo en estos identificamos el reto de que los flujos de efectivo no se reportaban ateriormente de forma consistente, sino que solamente se hace meción a su cambio y su tendencia hasta la incormporación de las NIF Mexicanas y la posterior adocpción de las NIIF; por lo tanto, resulto más sencillo localizar las ganacias netas para realizar el ejercicio. 
+La mayoría de los modelos empíricos de inversión se basan en el supuesto de que las empresas pueden responder a los precios establecidos en los mercados de valores (a través del “costo de capital” o “q de Tobin”). 
+Bajo esta optica, los flujos de caja (o en este caso, las utilidades como proxy) nos dan una idea de la disponilidad de liquidez en el periodo para realizar inversiones, esto es aplicable en casos en que las empresas estén limitadas en su capacidad de recaudar fondos externamente, el gasto de inversión puede ser sensible a la disponibilidad de financiamiento interno. Es decir, la inversión puede mostrar “sensibilidad excesiva” a los movimientos en el flujo de caja (o utilidades).
+
+De este modo, ahora se reazliza una regresión bajo la especificación:
+
+$$
+\mathrm{Inversion}_t = \alpha + \beta* {q´}_{t-1} + \rho*Utilidades + \varepsilon_t
+$$
+A continuación se presentan los resultados del modelo de regresión considerando utilidades y se comparan con los resultados del modelo univariado del inciso c):
+
+\newpage
+```{r reg-utilidades, echo=FALSE, results='asis'}
+# Modelos de regresión (I=Capex/activos)
+modelo_p_lag <- lm(inversion ~ razonq_lag + utilidad_neta, data = bd)
+
+stargazer(modelo_p_lag, modelo_lag, type = "latex", title = "Comparación de modelo considerendo utilidades")
+
+
+```
+
+En este caso se observa que el coeficiente \(\beta\) asociado a la q se reduce de forma considerable, de modo que parece haber una relación inversa entre la disponiblidad de flujos de efectivo (Utiliades) y la inversión de las empresas, sin embargo, estos resultados deben tomarse con cautel ya que el coeficiente de la utilidad neta parece tender a cero, aunque no es significativo. 
+
+
+## **Ejercicio 4 **
+Utilizando el código distribuído en el repositorio de la clase desarolle su
+intución sobre el problema de inversión. [3 horas, 1 puntos cada inciso]:
+
+Como primer paso, procedemos a replicar el ejercicio abordado en clase utilizando el código base proporcionado en el repositorio de Github. Esto nos permitirá recuperar la lógica de modelación y fortalecer la comprensión de los supuestos involucrados. A partir de dicha réplica, contestamos los incisos posteriores.
+
+### **Ejercicio de programación dinámica numérica**
+
+#### **Intuición**
+
+La intuición de la programación dinámica está plasmada en la llamada ecuación de Bellman:
+
+\[
+V(S) = \max U(C \mid S) + \beta \, \mathbb{E}[ V(S'(S,C)) \mid S ]
+\]
+
+Esta ecuación representa la idea de que el “valor” de estar en un estado \( S \) es igual a la suma del valor corriente más el valor futuro, optimizado respecto a la decisión corriente, asumiendo que el valor futuro \( V \) representa la utilidad futura total, asumiendo que se toman decisiones óptimas en el futuro. Es una ecuación “funcional”, que dice que la función del lado izquierdo es igual a la del lado derecho, \( V = F(U, V) \), que a su vez es una función de dos funciones \( U \) y \( V \). Finalmente, la ecuación representa un “punto fijo”, en el sentido de que la función \( F(U, \cdot) \) es una función que transforma una función \( V \) en otra \( V \), pero que en el caso de la función \( V \), regresa la misma función \( V \) original. Esta idea también se expresa diciendo que la \( V \) es un “punto fijo” de la “transformación” \( V_{i+1} = F(U, V_i) \). (Para ejemplificar de manera trivial la idea de un punto fijo podemos imaginar una simple ecuación algebraica que tenga punto fijo, por ejemplo \( x_{i+1} = \frac{x_i}{2} + 1 \). En esta ecuación, para cualquier \( x_i \) con la que empecemos, al computar la secuencia de \( i \)'s, vamos a llegar al valor \( x = 2 \).)
+
+
+#### **Elementos básicos de la teoría**
+
+Los problemas de programación dinámica tienen una solución única bajo ciertos supuestos, que en general quieren decir que la función \( F(U, \cdot) \) es una “contracción” o “mapeo contractivo”, es decir, que la “distancia” entre \( V_3 = F(U, V_2) \) y \( V_2 = F(U, V_1) \) es suficientemente menor a la distancia entre esa misma \( V_2 \) y \( V_1 = F(U, V_0) \), y así sucesivamente, y que por lo tanto la secuencia \( V_0, V_1, \ldots \) tiene un límite bien definido, lo cual se describe diciendo que la serie de funciones \( \{V_i\} \) “converge”.
+
+
+#### **Ejemplo de Modelo de Inversión**
+
+El problema que vamos a resolver es el de una empresa que invierte, instalando capital para producir ventas. La instalación de capital es costosa a una tasa creciente como función de la tasa de inversión. La empresa está sujeta a incertidumbre que consiste en que la productividad de su función de producción evoluciona aleatoriamente (casi siempre esto se modelada como un proceso de Markov, y específicamente, como un proceso que aproxime una caminata aleatoria).
+
+##### **Definiciones**
+
+###### **Parámetros numéricos**
+
+Es necesario establecer parámetros numéricos que describen cómo vamos a traducir el problema analítico a un problema numérico. Para ello definimos las características de una red de puntos que cubran una región que pensamos que es importante del espacio estado.A continuacion presentacmos las salidas mas ilustrativas para seguir el proceso paso a paso.
+
+```{r}
+# Cardinalidad del espacio de capital
+N <- 500
+# Cardinalidad del espacio de productividad
+M <- 5
+# Límites de variables de estado
+KMin<-1
+KMax<-10^5
+AMin<-1
+AMax<-5
+```
+
+###### **Parámetros económicos**
+
+```{r}
+# Parámetros del modelo
+Alpha <- 0.5  #concavidad d ela función producción
+Costo_Convexo <- 2  #coeficiente d elos costos de ajuste convexos
+Beta <- 0.95
+Costo_NoConvexo<-0.001  #coeficiente de los costso de ajuste NO convexos
+```
+
+###### **Representación numérica de variables de estado**
+
+```{r}
+# Vectores índice auxiliares
+IndexN <- 1:(N)
+IndexM <- 1:(M)
+# Vector de capital
+K <- exp(log(KMin) +(IndexN-1)/(N-1)*(log(KMax)-log(KMin)))
+plot(K)
+# Vector de productividad
+A <- exp(log(AMin) +(IndexM-1)/(M-1)*(log(AMax)-log(AMin)))
+plot(A)
+```
+
+##### **Matriz de transición entre estados exógenos**
+
+```{r  echo = FALSE, message = FALSE, warning = FALSE}
+# Matriz de probabilidades de transición
+M <- 5
+P <- t(matrix(c(0.6,0.2,0.1,0.1,0,
+                0.15,0.55,0.15,0.1,0.05,
+                0.1,0.15,0.5,0.15,0.1,
+                0.05,0.1,0.15,0.55,0.15,
+                0,0.1,0.1,0.2,0.6), nrow = M, ncol = M))
+
+cat("Primeras filas de la matriz P:\n")
+print(P[1:3, ])  # Solo muestra las primeras 3 filas
+
+# Matriz acumulada
+PAcc <- P %*% upper.tri(matrix(1.0, M, M), diag = TRUE)
+
+cat("\nPrimeras filas de la matriz acumulada PAcc:\n")
+print(PAcc[1:3, ])  # Solo muestra las primeras 3 filas
+
+# Gráfico de la matriz de transición
+persp(seq(1, M, 1), seq(1, M, 1), P, phi = 65, theta = 65,
+      xlab = "Estado Inicial", ylab = "Estado Final",
+      main = "Probabilidad de Transición")
+```
+
+###### **Definiciones auxiliares**
+
+```{r}
+KMatrix <- matrix(data=c(K,K,K,K,K),nrow=M,ncol=N,byrow=T)
+IndexMatrix <- matrix(data=c(IndexN,IndexN,IndexN,IndexN,IndexN),nrow=M,ncol=N,byrow=T)
+V0<-matrix(0,nrow=M,ncol=N)
+V1<-V0
+HIndex<-V0
+HReal<-V0
+# graficar la funci'on valor para distintos valores de K, A
+matplot(t(KMatrix),t(V0),type="lll")
+```
+
+```{r}
+AMatrix <- matrix(data=rep(A,N),nrow=M,ncol=N,byrow=F)
+Matriz_Ventas <- AMatrix*(KMatrix^Alpha)
+#plot(Matriz_Ventas[1,])
+#plot(Matriz_Ventas[,1])
+matplot(t(KMatrix),t(Matriz_Ventas),type="lll")
+
+KInicial=matrix(data=K,nrow=N,ncol=N,byrow=F)
+KFinal=matrix(data=K,nrow=N,ncol=N,byrow=T)
+Matriz_I<-KFinal-KInicial
+Matriz_CI <- Costo_Convexo*KInicial*(Matriz_I/KInicial)^2
+Matriz_I_Dif_0<- (Matriz_I<0)+(Matriz_I>0)
+Matriz_CostoNoConvexo<-Costo_NoConvexo*(Matriz_I_Dif_0)
+#V0=KMatrix
+#V1=0*KMatrix
+
+```
+
+
+##### **Iteración de la función valor**
+
+Hay una variedad de formas de "resolver" un problema de programación dinámica. En algunas ocasiones específicas se puede resolver analíticamente, pero en caso de que esto no sea posible —y con el fin de tener la flexibilidad de ajustar cualquier característica del problema y observar el impacto en la solución sin obtener una nueva solución analítica—, se puede recurrir a una solución numérica. Esta consiste en asumir un valor inicial para \( V_0 \), utilizar métodos numéricos para encontrar las mejores decisiones dado \( U \) y \( V_0 \), y con ello construir \( V_1 \), y así sucesivamente, hasta que se observe una "convergencia numérica" en la secuencia de \( V \)'s.
+
+```{r echo = FALSE, message = FALSE} 
+# Repetimos un número de veces TMax un ciclo de calcular una nueva V (V1) a partir de una V (V0) existente. 
+TTMax <- 100
+for (TT in 1:TTMax) {
+  EV <- P %*% V0
+  for (i in 1:M) {
+    for (j in 1:N) {
+      VijOptions <- Matriz_Ventas[i,j] - Matriz_CI[j,] - Matriz_I[j,] - Matriz_CostoNoConvexo[j,] + Beta * EV[i,]
+      Vij <- max(VijOptions)
+      Hij <- which.max(VijOptions)
+      V1[i,j] <- Vij
+      HIndex[i,j] <- Hij
+      HReal[i,j] <- K[Hij]
+    }
+  }
+  V0 <- V1
+}
+```
+
+```{r graficas-mas-alargadas, echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.height=12, fig.pos='H'}
+# Diseño personalizado: 2 columnas (4 + 3 gráficas)
+layout(matrix(c(1, 2,
+                3, 4,
+                5, 6,
+                7, 0), nrow = 4, ncol = 2, byrow = TRUE))
+
+par(mar = c(4, 4, 2, 1))  # márgenes ajustados
+
+# 1. Valor
+matplot(t(KMatrix), t(V0), type = "l", xlab = "K", ylab = "V0", main = "Función Valor")
+
+# 2. I/K
+matplot(t(KMatrix), (t(HReal) - t(KMatrix)) / t(KMatrix), type = "l", xlab = "K", ylab = "I/K", main = "Decisión: I/K")
+
+# 3. K'
+matplot(t(KMatrix), t(HReal), type = "l", xlab = "K", ylab = "HReal", main = "Decisión: K'")
+
+# 4. Costo
+matplot(t(KMatrix), Costo_Convexo * t(KMatrix) * (t(HReal) - t(KMatrix))^2, type = "l", xlab = "K", ylab = "Costo", main = "Costo Ajuste Convexo")
+
+# 5. Índice K'
+matplot(t(KMatrix), t(HIndex), type = "l", xlab = "K", ylab = "HIndex", main = "Decisión: Índice K'")
+
+# 6. q
+q <- (t(V0[, 2:N]) - t(V0[, 1:(N - 1)])) / (t(KMatrix[, 2:N]) - t(KMatrix[, 1:(N - 1)]))
+matplot(t(IndexMatrix[, 1:(N - 1)]), q, type = "l", xlab = "K", ylab = "q", main = "Función q")
+
+# 7. I
+matplot(t(KMatrix), t(HReal) - t(KMatrix), type = "l", xlab = "K", ylab = "I (HReal - K)", main = "Decisión: I")
+```
+
+##### **Simulación**
+
+```{r echo=FALSE, message=FALSE}
+# Número de periodos.
+MaxT<-100
+# Numero de individuos
+Individuos<-20
+
+# Vectores de historia
+KHist<-matrix(0,ncol=Individuos,nrow=MaxT)
+AHist<-matrix(0,ncol=Individuos,nrow=MaxT)
+
+# Valores iniciales
+
+AHist[1,]<- round(M/2)
+KHist[1,]<- round(N/2)
+
+# Evolución de las Variables de Estado, considerando las probabilidades de transición exógenas PAcc
+# y la regla de decisión óptima HIndex
+
+
+for (t in 1:(MaxT-1)){
+  for (j in 1:20){
+  KHist[t+1,j]<-HIndex[AHist[t,j],KHist[t,j]]
+  AHist[t+1,j]<-sum(runif(1,0,1)>PAcc[AHist[t,j],])+1
+  }
+}
+
+```
+
+##### **Visualización de la simulación**
+
+```{r graficas-ej5, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=6, fig.align='center',fig.pos='H'}
+# Configurar el layout: 2 filas, 1 columna
+par(mfrow = c(2, 1), mar = c(4, 4, 2, 1))  # márgenes ajustados
+
+# 1. Trayectoria de A
+plot(1:MaxT, AHist[,2], type = "l", col = "blue", lwd = 2,
+     xlab = "Periodo", ylab = "A", main = "Trayectoria del Estado Exógeno (A)")
+
+# 2. Trayectoria de K
+plot(1:MaxT, KHist[,2], type = "l", col = "darkgreen", lwd = 2,
+     xlab = "Periodo", ylab = "K", main = "Trayectoria del Capital (K)")
+```
+
+
+
+### **a)** 
+**Grafique la función valor y la función de política para distintos valores del espacio de estados y grafique una realización aleatoria (con semilla fija) del nivel de capital de la empresa.**
+
+En este inciso se grafica la **función valor** y la **función de política** óptima obtenidas a través del método de iteración de valores. Estas funciones permiten observar cómo varía la utilidad total esperada y las decisiones óptimas de inversión en función del nivel de capital y la productividad. Además, se simula una trayectoria temporal del capital para un individuo representativo, utilizando una semilla aleatoria fija para asegurar la reproducibilidad. Esta simulación ilustra la evolución del sistema bajo incertidumbre y decisiones óptimas.
+
+```{r sim-graficas-a, echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=6, fig.align='center', fig.pos='H'}
+
+# Establecer semilla para reproducibilidad
+set.seed(123)
+
+# Número de periodos
+MaxT <- 100
+# Simulación para un solo individuo
+KHist <- numeric(MaxT)
+AHist <- numeric(MaxT)
+
+# Condiciones iniciales
+KHist[1] <- round(N / 2)
+AHist[1] <- round(M / 2)
+
+# Simulación de la trayectoria de A y K
+for (t in 1:(MaxT - 1)) {
+  AHist[t + 1] <- sum(runif(1) > PAcc[AHist[t], ]) + 1
+  KHist[t + 1] <- HIndex[AHist[t], KHist[t]]
+}
+
+# Configurar layout para dos gráficos verticales
+par(mfrow = c(2, 1), mar = c(4, 4, 2, 1))
+
+# Gráfico de trayectoria de productividad A
+plot(1:MaxT, AHist, type = "l", col = "blue", lwd = 2,
+     xlab = "Periodo", ylab = "A",
+     main = "Trayectoria del Estado Exógeno (A)")
+
+# Gráfico de trayectoria de capital K
+plot(1:MaxT, K[ KHist ], type = "l", col = "darkgreen", lwd = 2,
+     xlab = "Periodo", ylab = "K",
+     main = "Trayectoria del Capital (K)")
+```
+
+Las gráficas muestran una realización específica (con semilla fija) del estado exógeno de productividad \( A \) y del nivel de capital \( K \) de la empresa a lo largo de 100 periodos. En la primera gráfica se observa que el estado exógeno \( A \) fluctúa aleatoriamente entre los cinco niveles definidos, de acuerdo con la matriz de transición de Markov. Esta aleatoriedad es la que introduce incertidumbre en el entorno de inversión de la empresa. En la segunda gráfica, el capital \( K \) sigue una trayectoria creciente en los primeros periodos, producto de decisiones óptimas de inversión, hasta estabilizarse en torno a un valor estacionario. Este comportamiento refleja que, dadas las condiciones del modelo (parámetros tecnológicos y de ajuste), la empresa converge hacia una política de inversión constante compatible con un capital óptimo de largo plazo.
+
+### **b)** 
+**Modifique un parámetro del problema (equipo 1: dispersión de la productividad; equipo 2: costo de ajuste convexo; equipo 3: costo de ajuste no-convexo; equipo 4: número de puntos disponibles en la dimensión "capital" del espacio de estados; equipo 5: tasa de interés), incluya las líneas de código modificadas, y nuevamente grafique la función valor, la función de política y la trayectoria para la misma realización aleatoria de la productividad y compárelas con lo obtenido en el inciso anterior.**
+
+Somos el equipo 4 , por tanto debemos analizar el efecto de modificar la resolución del espacio de estados sobre la variable de capital. Para ello, se ajusta el espacio de capital \( N \), incrementando el número de puntos en la malla que representa los niveles posibles de capital. Esta modificación permite evaluar si una discretización más fina (mayor \( N \)) mejora la precisión de la solución numérica obtenida para la función de valor y la función de política. Se mantiene constante el resto de los parámetros, permitiendo una comparación directa con el escenario base.
+
+```{r , echo=FALSE, message=FALSE, warning=FALSE, fig.width=8, fig.height=6, fig.align='center', fig.pos='H'}
+# Nuevo número de puntos en K
+N <- 300  # reducción del grid de capital
+
+# Recalcular vectores e índices
+IndexN <- 1:N
+K <- exp(log(KMin) + (IndexN - 1) / (N - 1) * (log(KMax) - log(KMin)))
+KMatrix <- matrix(data = rep(K, M), nrow = M, ncol = N, byrow = TRUE)
+IndexMatrix <- matrix(data = rep(IndexN, M), nrow = M, ncol = N, byrow = TRUE)
+
+# Reiniciar matrices
+V0 <- matrix(0, nrow = M, ncol = N)
+V1 <- V0
+HIndex <- V0
+HReal <- V0
+
+# Matrices auxiliares
+KInicial <- matrix(data = K, nrow = N, ncol = N, byrow = FALSE)
+KFinal <- matrix(data = K, nrow = N, ncol = N, byrow = TRUE)
+Matriz_I <- KFinal - KInicial
+Matriz_CI <- Costo_Convexo * KInicial * (Matriz_I / KInicial)^2
+Matriz_I_Dif_0 <- (Matriz_I < 0) + (Matriz_I > 0)
+Matriz_CostoNoConvexo <- Costo_NoConvexo * Matriz_I_Dif_0
+
+# Recalcular ventas
+AMatrix <- matrix(data = rep(A, N), nrow = M, ncol = N, byrow = FALSE)
+Matriz_Ventas <- AMatrix * (KMatrix^Alpha)
+
+# Iteración de la función valor
+TTMax <- 100
+for (TT in 1:TTMax) {
+  EV <- P %*% V0
+  for (i in 1:M) {
+    for (j in 1:N) {
+      VijOptions <- Matriz_Ventas[i,j] - Matriz_CI[j,] - Matriz_I[j,] - Matriz_CostoNoConvexo[j,] + Beta * EV[i,]
+      Vij <- max(VijOptions)
+      Hij <- which.max(VijOptions)
+      V1[i,j] <- Vij
+      HIndex[i,j] <- Hij
+      HReal[i,j] <- K[Hij]
+    }
+  }
+  V0 <- V1
+}
+
+# Simulación con mismos parámetros de semilla
+set.seed(123)
+MaxT <- 100
+KHist <- matrix(0, ncol = 1, nrow = MaxT)
+AHist <- matrix(0, ncol = 1, nrow = MaxT)
+AHist[1,] <- round(M/2)
+KHist[1,] <- round(N/2)
+for (t in 1:(MaxT-1)) {
+  KHist[t+1,] <- HIndex[AHist[t,], KHist[t,]]
+  AHist[t+1,] <- sum(runif(1,0,1) > PAcc[AHist[t,],]) + 1
+}
+
+# Visualización
+par(mfrow = c(2, 1), mar = c(4, 4, 2, 1))
+plot(1:MaxT, AHist[,1], type = "l", col = "blue", lwd = 2, xlab = "Periodo", ylab = "A", main = "Trayectoria del Estado Exógeno (A) con N=300")
+plot(1:MaxT, KHist[,1], type = "l", col = "darkgreen", lwd = 2, xlab = "Periodo", ylab = "K", main = "Trayectoria del Capital (K) con N=300")
+```
+
+Al comparar las trayectorias del capital entre los incisos (a) y (b), se observan diferencias significativas en la dinámica de acumulación. En el inciso (a), con una malla más densa (mayor número de puntos de capital \( N = 500 \)), el capital presenta una trayectoria más suave y con ajustes graduales, reflejando una mayor precisión en la representación del espacio de decisiones. En cambio, en el inciso (b), al reducir la malla a \( N = 300 \), la trayectoria del capital es más plana y alcanza rápidamente un valor estacionario. Esto sugiere que una discretización más gruesa puede limitar la sensibilidad del modelo ante shocks exógenos y reducir la capacidad de capturar adecuadamente la dinámica óptima de inversión. En términos de intuición, este resultado resalta la importancia del número de puntos en el grid de capital como un determinante clave en la precisión de la solución numérica del modelo.
+
+## **Ejercicio 5 **
+
+**Proponga una mejora al archivo Diccionario de Economía utilizando github para generar una rama adicional del repositorio, modi cándola y luego solicitando que se incorporen los cambios.**
+
+Como parte del ejercicio 5, se propusieronel término **Inversión Irreversible**, el cual refiere a la presencia de costos asimétricos de ajuste del capital, lo que implica que es más costoso reducir que aumentar el stock de capital, generando así efectos persistentes sobre la inversión bajo incertidumbre. En segundo lugar.
+
+Añadimos concepto de la **Curva de Beveridge**, que describe la relación inversa entre el desempleo y las vacantes laborales en equilibrio, como resultado de los mecanismos de búsqueda y emparejamiento en el mercado laboral. Estas adiciones permiten enriquecer el glosario macroeconómico desde la perspectiva de modelos dinámicos de inversión y empleo.
