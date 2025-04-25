@@ -1,0 +1,1 @@
+Carpeta comprimida para corroborar la replicabilidad del documento (la carpeta se debe descomprimir y se corre el archivo .rmd) : https://drive.google.com/file/d/1TVWXRbj0N2SsoYWx-gapG8TH-71l_nqP/view?usp=sharing
