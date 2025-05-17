@@ -1,0 +1,503 @@
+---
+title: ""
+author: ""
+date: ""
+output: 
+  pdf_document:
+    toc: false
+geometry: margin=1in
+fontsize: 12pt
+---
+
+```{=tex}
+\begin{titlepage} % Crea una portada completa
+\begin{center}
+
+% Insertar la imagen (ajusta el nombre y tamaño según necesites)
+\includegraphics[width=10cm]{colmex.jpg}  
+
+\vspace{0.6cm}  
+
+{\Large \textbf{Maestría en Economía}}  
+
+\vspace{0.3cm}
+
+{\Large \textbf{2024-2026}}  
+
+\vspace{0.6cm}  
+
+\textcolor{red!50!black}{\noindent\rule{16cm}{0.8pt}}  % Línea horizontal  
+\vspace{0.5cm}  
+
+{\Huge \textbf{Macroeconomía II}}
+
+\vspace{0.5cm} 
+
+{\large \textbf{Tarea 4}} 
+
+\vspace{0.5cm}  
+\textcolor{red!50!black}{\noindent\rule{16cm}{0.8pt}}  % Línea horizontal    
+
+{\LARGE \textbf{Elaborado por:}}  
+\vspace{0.3cm}  
+
+{\large José Daniel Fuentes García}  
+
+{\large Andrés Ancona}  
+
+{\large Oscar Gibran González}  
+
+\vspace{0.5cm}  
+
+{\LARGE \textbf{Profesor}}  
+\vspace{0.3cm}  
+
+{\large Santiago Bazdresch}  
+
+\vspace{0.5cm}  
+
+{\LARGE \textbf{Fecha}}  
+\vspace{0.3cm}  
+
+{\large 17 de mayo de 2025}  
+
+\end{center}
+\end{titlepage}
+
+```
+
+\newpage
+
+```{=latex}
+\tableofcontents
+```
+
+\newpage
+
+# **Instrucciones**
+
+**Realice los siguientes ejercicios con el equipo señalado.**
+
+# **a)**  
+**Liste entre 5 y 10 fechas clave del suceso, entre que empezaron los problemas y las autoridades tomaron control del Banco.**
+
+### \textcolor{red}{RESPUESTA}
+
+A continuación, se presentan entre 5 y 10 fechas clave seleccionadas a partir del documento \textit{Review of the Federal Reserve’s Supervision and Regulation of Silicon Valley Bank}, publicado por la Junta de Gobernadores del Sistema de la Reserva Federal en abril de 2023 \cite{federal2023}. Este informe oficial ofrece una cronología detallada y una evaluación crítica sobre las fallas en la supervisión y regulación que condujeron al colapso de Silicon Valley Bank (SVB). Las fechas fueron elegidas por representar hechos relevantes en la evolución del riesgo financiero y regulatorio de la entidad: desde decisiones estratégicas de inversión que aumentaron la vulnerabilidad, pasando por advertencias y hallazgos supervisores clave, hasta los eventos inmediatos que culminaron en la corrida bancaria y la posterior intervención regulatoria.
+
+**1. Ene. 2021:** SVB cambia su portafolio hacia títulos mantenidos a vencimiento (HTM), lo que lo expone al riesgo de tasa de interés.  
+**2. Nov. 2021:** Supervisores emiten hallazgos clave sobre debilidades en planeación de liquidez.  
+**3. Mayo 2022:** Se detectan debilidades fundamentales en gobernanza y gestión de riesgos; SVB recibe calificación "Deficiente-1".  
+**4. Nov. 2022:** Se emite advertencia formal sobre riesgo de tasas de interés.  
+**5. Ene. 2023:** SVB entra en pruebas de supervisión de 2 años tras superar los $100 mil millones en activos.  
+**6. Mar. 8, 2023:** SVB anuncia reestructuración de balance: vende $21 mil millones en activos con pérdidas, intenta levantar $2.25 mil millones en capital.  
+**7. Mar. 9, 2023:** Se produce una corrida bancaria sin precedentes: $42 mil millones en retiros en un solo día.  
+**8. Mar. 10, 2023:** El Departamento de Protección Financiera de California cierra formalmente el banco.  
+
+\newpage
+
+```{r eventos-svb-etapas,echo=FALSE, message=FALSE, warning=FALSE}
+library(knitr)
+
+# Crear tabla con clasificación por etapas
+eventos_svb_etapas <- data.frame(
+  Fecha = c(
+    "Ene. 2021",
+    "Nov. 2021",
+    "Mayo 2022",
+    "Nov. 2022",
+    "Ene. 2023",
+    "8-Mar-2023",
+    "9-Mar-2023",
+    "10-Mar-2023"
+  ),
+  Evento = c(
+    "Cambio hacia títulos mantenidos a vencimiento (HTM), lo que expone al riesgo de tasa de interés",
+    "Supervisores emiten hallazgos sobre debilidades en planeación de liquidez",
+    "Se detectan fallas de gobernanza y gestión de riesgos; calificación 'Deficiente-1'",
+    "Advertencia formal sobre riesgo de tasas de interés",
+    "Inicio de pruebas de supervisión tras superar $100 mil millones en activos",
+    "SVB anuncia reestructuración: vende activos con pérdida y busca recapitalización",
+    "Corrida bancaria: se retiran $42 mil millones en un solo día",
+    "Cierre del banco por el Departamento de Protección Financiera de California"
+  ),
+  Fase = c(
+    "Vulnerabilidades iniciales",
+    "Vulnerabilidades iniciales",
+    "Alertas y supervisión",
+    "Alertas y supervisión",
+    "Alertas y supervisión",
+    "Colapso",
+    "Colapso",
+    "Colapso"
+  )
+)
+
+# Mostrar la tabla clasificada
+kable(eventos_svb_etapas, caption = "Línea de tiempo del colapso de SVB clasificada por fases")
+```
+**Fuente**: Elaboración propia con base en *Review of the Federal Reserve’s Supervision and Regulation of Silicon Valley Bank* (Federal Reserve, abril 2023).
+
+```{r vistime-svb-fuente-grande, echo=FALSE, message=FALSE, warning=FALSE, fig.width=14, fig.height=6}
+library(vistime)
+library(lubridate)
+library(ggplot2)
+
+# Datos
+svb_fases <- data.frame(
+  event = c("HTM", "Liquidez",
+            "Deficiente", "Tasas", "Pruebas",
+            "Reestruct.", "Corrida", "Cierre"),
+  start = as.Date(c("2021-01-01", "2021-11-01",
+                    "2022-05-01", "2022-11-01", "2023-01-01",
+                    "2023-03-08", "2023-03-09", "2023-03-10")),
+  end = as.Date(c("2021-11-01", "2022-05-01",
+                  "2022-11-01", "2023-01-01", "2023-03-08",
+                  "2023-03-09", "2023-03-10", "2023-03-11")),
+  group = c("Vulnerabilidades iniciales", "Vulnerabilidades iniciales",
+            "Alertas y supervisión", "Alertas y supervisión", "Alertas y supervisión",
+            "Colapso", "Colapso", "Colapso"),
+  color = c("#9ecae1", "#9ecae1", "#fcae91", "#fcae91", "#fcae91",
+            "#fdd0a2", "#fdd0a2", "#fdd0a2")
+)
+
+# Generar gráfico vistime y aumentar tipografía
+p <- gg_vistime(
+  data = svb_fases,
+  col.event = "event",
+  col.start = "start",
+  col.end = "end",
+  col.group = "group",
+  col.color = "color",
+  linewidth = 45,
+  title = "Línea de tiempo del colapso de Silicon Valley Bank (SVB) clasificada por fases",
+  show_labels = TRUE,
+  optimize_y = FALSE
+)
+
+# Aumentar tamaño de fuente en todos los elementos
+p + theme(
+  text = element_text(size = 12),           # fuente general
+  plot.title = element_text(size = 14, face = "bold"), # título
+  axis.text = element_text(size = 11),      # fechas y etiquetas
+  strip.text = element_text(size = 12),     # texto de facetas si hubiera
+  legend.text = element_text(size = 11),
+  plot.margin = margin(t = 10, r = 80, b = 10, l = 10)
+)
+
+
+```
+**Fuente**: Elaboración propia con base en *Review of the Federal Reserve’s Supervision and Regulation of Silicon Valley Bank* (Federal Reserve, abril 2023).
+
+
+# **b)**  
+**Liste los principales reguladores responsables de supervisar la institución.**
+
+### \textcolor{red}{RESPUESTA}
+
+**Los principales reguladores responsables de supervisar Silicon Valley Bank fueron los siguientes:**
+
+- **\*Reserva Federal de San Francisco (FRBSF)\***:  
+  \*Fue la autoridad principal responsable de la supervisión diaria de SVB Financial Group, casa matriz de SVB. Su función incluía exámenes y evaluaciones continuas bajo el sistema de calificación CAMELS.\*
+
+- **\*Junta de Gobernadores de la Reserva Federal (Board of Governors)\***:  
+  \*Responsable de diseñar la política regulatoria, normativa y de supervisión para firmas como SVB. Además, revisa los hallazgos de los bancos regionales como la FRBSF.\*
+
+- **\*Corporación Federal de Seguro de Depósitos (FDIC)\***:  
+  \*Encargada de gestionar la resolución y liquidación del banco tras su quiebra. La FDIC intervino el 10 de marzo de 2023 para cerrar SVB y proteger a los depositantes.\*
+
+- **\*Departamento de Protección e Innovación Financiera de California (DFPI)\***:  
+  \*Fue el regulador estatal que formalmente revocó la licencia bancaria de SVB y colocó la institución en manos de la FDIC.\*
+
+
+# **c)**  
+**Liste las reformas a los requerimientos de supervisión que se implementaron en los años previos al evento y que redujeron los requisitos a los que estaba sujeto, y cuál fue el propósito anunciado para dichas reformas.**
+
+### \textcolor{red}{RESPUESTA}
+
+En los años previos al colapso del Silicon Valley Bank (SVB), hubo diversos retrocesos regulatorios desde el gobierno federal de los Estados Unidos que redujeron los requisitos de supervisión a los que estaba sujeto este banco. En concreto, hasta 2018 esta institución estaba sujeta plenamente a las ``Enhanced Prudential Standards'' de la Ley Dodd-Frank. Estas reformas tuvieron como propósito declarado aliviar la carga regulatoria sobre instituciones financieras consideradas medianas o regionales, fomentando así una mayor flexibilidad operativa y, teóricamente, impulsando el crecimiento económico mediante una supervisión más proporcional al riesgo percibido.
+
+La primera y más importante reforma fue la promulgación de la \textit{Economic Growth, Regulatory Relief, and Consumer Protection Act} (EGRRCPA) en mayo de 2018. Antes de esta ley, los bancos con activos superiores a 50 mil millones de dólares —como era el caso de SVB— eran considerados instituciones ``sistémicamente importantes'' y, por lo tanto, estaban sujetos a requisitos más estrictos bajo las Enhanced Prudential Standards establecidas por Dodd-Frank de 2010. La EGRRCPA elevó significativamente el umbral para ser clasificado como una institución sistémicamente importante desde los 50 mil millones hasta los 250 mil millones de dólares. Como resultado directo, SVB, con activos cercanos a los 210 mil millones, dejó de estar sujeto a algunas regulaciones fundamentales como las pruebas de estrés obligatorias supervisadas periódicamente por la Reserva Federal y las exigencias más estrictas de liquidez y capital \cite{federal2023}. El propósito declarado de esta reforma fue, según sus promotores, reducir las cargas regulatorias consideradas desproporcionadas para bancos regionales y medianos, mejorando así la capacidad de estos bancos para prestar dinero, apoyar el crecimiento económico local y beneficiar particularmente a pequeñas empresas y consumidores \cite{congress2018}.
+
+La aprobación de la EGRRCPA fue el resultado de una intensa presión política y de \textit{lobby} por parte de la industria bancaria. Esta reforma no solo respondió a argumentos económicos, sino que también reflejó una estrategia coordinada de influencia legislativa por parte de bancos regionales y sus aliados políticos \cite{sullivan2023}.
+
+Desde 2015, SVB y otras instituciones financieras medianas iniciaron campañas activas para persuadir al Congreso de que las regulaciones impuestas por la Ley Dodd-Frank eran excesivas para bancos de su tamaño. El entonces CEO de SVB, Greg Becker, testificó ante el Senado argumentando que, de no aliviarse las regulaciones, el banco tendría que desviar recursos significativos de su función principal de financiar empresas innovadoras hacia el cumplimiento regulatorio. Este testimonio fue parte de una estrategia más amplia que incluyó contribuciones a campañas políticas y reuniones con legisladores clave \cite{shahshahani2023}.
+
+La influencia de SVB y otros bancos se extendió más allá de las audiencias públicas. Por ejemplo, Signature Bank incorporó a su junta directiva a Barney Frank, coautor de la Ley Dodd-Frank, quien posteriormente abogó por una supervisión más flexible para bancos medianos. Esta táctica de aprovechar conexiones políticas para influir en la legislación es un fenómeno conocido como ``puerta giratoria'', donde exfuncionarios públicos ocupan posiciones en el sector privado para influir en políticas que anteriormente supervisaban \cite{slodysko2023}.
+
+Una segunda reforma se produjo en octubre de 2019, cuando la Reserva Federal finalizó una serie de cambios regulatorios conocidos como el ``Tailoring'' de los Enhanced Prudential Standards. Esta reforma estableció un sistema más diferenciado de supervisión, clasificando a las instituciones financieras en cuatro categorías según su tamaño, complejidad y perfil de riesgo. Bajo esta nueva clasificación, SVB fue ubicado en la Categoría IV, reservada para bancos con activos entre 100 mil millones y 250 mil millones de dólares que no presentaban factores adicionales de alto riesgo. Como resultado de esta clasificación, SVB experimentó una reducción adicional en los requerimientos de supervisión relacionados con pruebas de estrés, liquidez, requisitos de capital y divulgación de información financiera. El propósito anunciado de esta reforma fue mejorar la eficiencia regulatoria mediante la adaptación de los requisitos regulatorios a las características específicas de cada banco, eliminando requisitos considerados innecesarios o excesivos para instituciones que se consideraban menos riesgosas \cite{federal2019}.
+
+Como se podría esperar, estas reformas tuvieron una fuerte oposición desde diversos grupos de actores, principalmente políticos, analistas independientes e incluso de parte de algunas instituciones financieras. Las críticas a la EGRRCPA se centraron en que las reformas podrían socavar las protecciones establecidas tras la crisis financiera de 2008, al reducir la supervisión de bancos que, aunque no considerados sistémicamente importantes, tenían el potencial de generar riesgos significativos para el sistema financiero \cite{perkins2018}.
+
+Sin embargo, el contexto político de fondo fue el inicio de la presidencia de Donald Trump, quien veía con buenos ojos esta liberalización del sector, de modo que incluso representantes demócratas vieron a esta reforma como un símbolo de la capacidad de generar acuerdos entre ambos partidos y el nuevo presidente.
+
+
+# **d)**  
+**Explique qué caracterizaba al financiamiento del Banco: sobretodo depositantes pequeños, sobretodo depositantes grandes, sobretodo financiamiento interbancario.**
+
+### \textcolor{red}{RESPUESTA}
+
+Silicon Valley Bank tenía la característica de que su financiamiento provenía, principalmente, de grandes depositantes, principalmente empresas tecnológicas emergentes, firmas de capital de riesgo y clientes institucionales con grandes depósitos, como los eran:
+
+\begin{itemize}
+    \item \textbf{Empresas emergentes respaldadas por capital de riesgo:} \\
+    SVB se especializaba en atender a startups tecnológicas y de biociencias respaldadas por firmas de capital de riesgo. Estas empresas mantenían saldos de efectivo significativos provenientes de rondas de financiamiento, lo que resultaba en depósitos sustanciales en el banco.
+    
+    \item \textbf{Firmas de capital de riesgo y capital privado:} \\
+    El banco ofrecía servicios a firmas de capital de riesgo y capital privado, incluyendo líneas de crédito garantizadas por compromisos de capital de sus socios limitados.
+    
+    \item \textbf{Clientes de alto patrimonio:} \\
+    Si bien el banco ofrecía servicios de banca privada, se centraba en atender a individuos de alto patrimonio a través de su división \textit{SVB Private}, con servicios bancarios personales y gestión de patrimonio. Aun así, los depósitos correspondientes a esta subsidiaria representaban menos del 10\% de los depósitos totales del grupo.
+    
+    \item \textbf{Empresas tecnológicas y de salud en etapas de crecimiento:} \\
+    SVB proporcionaba financiamiento y servicios bancarios a empresas tecnológicas y de salud en etapas de crecimiento, incluyendo préstamos y servicios de tesorería.
+\end{itemize}
+
+Ello derivaba en que la base de clientes del Silicon Valley Bank estuviera caracterizada por saldos de depósitos no asegurados, concentración sectorial de los clientes (sector de tecnología, biociencias y capital de riesgo) y volatilidad de las necesidades de liquidez de los clientes \cite{svb2022}.
+
+Recordando que el seguro de depósitos bancarios de la FDIC solamente asegura depósitos por un máximo de 250,000 dólares en caso de quiebra del banco, la institución se volvía especialmente vulnerable ante corridas bancarias, ya que los depositantes no tendrían una garantía de recuperar sus fondos y se apresurarían a retirar sus depósitos. Según el informe de la Reserva Federal, aproximadamente el 94\% de los depósitos de SVB al final de 2022 no estaban asegurados por la FDIC, lo que indica una concentración significativa de grandes depositantes \cite{federal2023}.
+
+Silicon Valley Bank (SVB) era particularmente dependiente de empresas emergentes respaldadas por fondos de capital de riesgo (\textit{venture capital}, VC). Este perfil de cliente se caracterizaba por mantener grandes depósitos líquidos generados a partir de rondas de financiamiento, destinados generalmente a cubrir gastos operativos futuros. Dichas empresas, al estar en etapas iniciales o intermedias de crecimiento, no solían generar flujos continuos de efectivo por ventas o utilidades, sino que dependían críticamente del financiamiento externo. Esta particularidad implicaba una vulnerabilidad significativa para el banco: en contextos económicos favorables, la disponibilidad constante de fondos de capital riesgo aseguraba depósitos estables y abundantes en el banco. Sin embargo, en momentos de incertidumbre económica, como un periodo alcista en las tasas de interés, los fondos de capital de riesgo suelen reducir sustancialmente sus inversiones. Este fenómeno presiona a las empresas emergentes a retirar sus depósitos bancarios rápidamente para cubrir gastos operativos inmediatos, ya que su acceso a nuevas rondas de financiamiento se vuelve limitado \cite{federal2023}.
+
+Por último, dado que la gran mayoría de los clientes, tanto corporativos como privados, pertenecían al mismo sector, los depósitos provenían de un grupo homogéneo de clientes con perfiles y necesidades financieras similares. Esto significaba que cualquier perturbación en el sector tecnológico o en el flujo de financiamiento de capital de riesgo podía tener un impacto desproporcionado en la estabilidad del banco.
+
+Usualmente, una de las vías que tienen los bancos para cubrir necesidades de liquidez inmediatas es recurriendo temporalmente a fondos provistos por otras instituciones financieras, es decir, financiamiento interbancario. En contraste, SVB adoptó un modelo en el que casi la totalidad de su financiamiento provenía exclusivamente de depósitos corporativos y de capital de riesgo. Como resultado, cuando surgieron problemas de liquidez derivados de la rápida retirada masiva de depósitos por parte de sus clientes (principalmente grandes depositantes), SVB no contaba con una estructura previamente establecida de líneas interbancarias ni tenía acceso fácil a fuentes de financiamiento de emergencia en el mercado interbancario.
+
+
+# **e)**  
+**¿Qué eventos se dieron que se parecen a una corrida bancaria en términos de depositantes que están desesperados por obtener sus fondos antes de que cierre el banco?**
+
+### \textcolor{red}{RESPUESTA}
+
+Podemos asemejar ciertos eventos que llevaron a la quiebra de Silicon Valley Bank (SVB) a una corrida bancaria al estilo del modelo de \textbf{Diamond-Dybvig}:
+
+SVB recibió \textbf{depósitos mayoritariamente a corto plazo}, principalmente de \textit{startups} y fondos de capital de riesgo (\textit{venture capital}). Por otro lado, invirtió esos recursos en \textbf{bonos del Tesoro con vencimientos superiores a un año} y otros activos de largo plazo. Es decir, sus \textbf{pasivos eran líquidos}, pero sus \textbf{activos eran ilíquidos}: riesgo de \textbf{\textit{maturity mismatch}}.
+
+Un \textbf{choque inesperado en la tasa de interés} (la cual aumentó significativamente) tuvo efectos adversos por dos vías. Primero, cuando suben las tasas, los bonos previamente emitidos pierden valor en el mercado secundario. Este primer canal sería, en principio, inofensivo si el banco no tuviera que liquidar estos activos. Sin embargo, la subida de tasas también afectó a los \textbf{depositantes}, ya sea por una disminución en sus flujos de caja debido al \textbf{enfriamiento de la economía}, o por una \textbf{reasignación de fondos} desde cuentas bancarias hacia instrumentos más rentables. En particular, las \textit{startups} (más sensibles al ciclo económico) comenzaron a \textbf{retirar sus depósitos}.
+
+Para hacer frente a estos retiros, SVB tuvo que \textbf{vender bonos con pérdidas}. Al intentar recapitalizarse, anunció que necesitaba recaudar \textbf{US\$2{,}250 millones} para cubrir esas pérdidas. El mercado interpretó esto como una \textbf{señal de debilidad}, lo que generó \textbf{pánico}.
+
+Dado que los \textbf{depósitos estaban asegurados solo hasta US\$250{,}000}, muchos clientes, cuyas cuentas superaban esa cifra (\textbf{casi el 90\%} de los fondos en SVB), \textbf{temieron perder su dinero} ante una posible quiebra. Esto desencadenó una \textbf{corrida bancaria clásica}. Aunque habría sido mejor esperar para quienes no necesitaban efectivo inmediatamente (\textbf{agentes pacientes}), el \textbf{miedo a perder todo} llevó a muchos a retirarlos de inmediato: un ejemplo claro de \textbf{``pánico''}, como en el modelo de Diamond-Dybvig. Si todos creen que los demás retirarán sus fondos, entonces lo óptimo es retirarlos también. Que todos intenten retirar sus depósitos es un \textbf{equilibrio de Nash}. En apenas \textbf{24 a 48 horas}, se retiraron más de \textbf{US\$40{,}000 millones}.
+
+De acuerdo con las predicciones del modelo, la \textbf{única forma de contener la corrida} era con una \textbf{intervención creíble por parte del gobierno}. Tanto el presidente \textbf{Joe Biden} como \textbf{Jerome Powell}, presidente de la Reserva Federal, anunciaron que garantizarían todos los depósitos, no solo para evitar el colapso de SVB, sino principalmente para \textbf{frenar posibles efectos de contagio}. A pesar de esto, otros bancos regionales como \textbf{Signature Bank} y \textbf{First Republic Bank} también colapsaron poco después.
+
+
+# **f)**  
+**Responda una de las siguientes preguntas en función del equipo en el que esté asignado:**
+
+### **v. EQUIPO 5:**  
+**Describa en qué medida se criticó en los medios a los reguladores porque sus acciones fomentarán el riesgo moral de los grandes depositantes hacia adelante, o en qué medida se consideró óptima su reacción.**
+
+### \textcolor{red}{RESPUESTA}
+
+La intervención del \textbf{gobierno estadounidense} para \textbf{garantizar todos los depósitos} de \textbf{Silicon Valley Bank (SVB)}, incluidos aquellos \textbf{no asegurados por encima del límite de US\$250{,}000}, fue celebrada por evitar un posible \textbf{efecto dominó} en el sistema financiero, justo cuando la economía aún se encontraba en proceso de recuperación tras la pandemia.
+
+Si bien SVB no era un \textbf{banco sistémico} en la escala de \textbf{Lehman Brothers}, su colapso generó \textbf{nerviosismo global}, llegando incluso a \textbf{aumentar la presión} sobre instituciones como \textbf{Credit Suisse}. La \textbf{respuesta rápida y coordinada} de la \textbf{Reserva Federal}, el \textbf{Tesoro} y la \textbf{FDIC} logró contener un \textbf{pánico mayor}, cuyo alcance potencial nunca podremos conocer con certeza.
+
+Sin embargo, esa misma decisión desató fuertes críticas por incentivar \textbf{riesgo moral}: al rescatar a \textbf{grandes depositantes}, se debilitó el \textbf{incentivo para monitorear} la solidez de las instituciones financieras, y se envió la señal de que, ante una mala gestión, el \textbf{gobierno intervendrá} para evitar pérdidas. Además, la medida fue percibida como \textbf{arbitraria}, al \textbf{alterar las reglas del juego} en medio de la crisis, reforzando lo que algunos analistas han llamado una \textbf{``aristocracia del acceso''}: aquellos con \textbf{conexiones políticas} tienen mayores probabilidades de ser salvados.
+
+Aunque el rescate fue financiado a través del \textbf{Fondo de Seguro de Depósitos}, y no con \textbf{impuestos directos}, el hecho de que \textbf{bancos prudentes deban contribuir más} para cubrir pérdidas ajenas introduce una \textbf{distorsión estructural} en el sistema. En términos estratégicos, si los demás no van a \textbf{``apretarse el cinturón''}, tú tampoco lo harás: se genera así un \textbf{equilibrio de Nash} en el que la decisión óptima de los bancos es \textbf{asumir más riesgos}.
+
+En última instancia, aunque la medida resultó \textbf{efectiva en el corto plazo}, dejó \textbf{dudas profundas} sobre la \textbf{credibilidad del marco institucional} y los \textbf{incentivos que regirán hacia adelante}. Si negociamos con terroristas una vez, da la impresión de que \textbf{siempre estaremos dispuestos a negociar}. De igual forma, si el \textbf{Estado actúa \textit{ex post}} para evitar pérdidas a quienes asumieron riesgos desmedidos, se \textbf{erosiona la disciplina del mercado} y se \textbf{sientan las bases para futuras crisis}.
+
+# **Anexo**
+
+## *Modelo Diamond–Dybvig*
+
+### *Supuestos*
+
+- La economía tiene tres periodos: \( t = 0, 1, 2 \).
+- Cada agente recibe una dotación inicial de 1 unidad del bien en \( t = 0 \).
+- Si se invierte la unidad:
+  - Se obtiene 1 unidad en \( t = 1 \) si se liquida anticipadamente,
+  - Se obtiene \( R > 1 \) en \( t = 2 \) si se mantiene.
+- En el periodo 1, una fracción \( \theta \in (0,1) \) de los agentes descubre que prefiere consumir inmediatamente (tipo \( a \)), mientras que el resto (tipo \( b \)) puede consumir en \( t = 1 \) o \( t = 2 \).
+- Los tipos de agentes no son observables.
+- Funciones de utilidad:
+  - Tipo \( a \): \( U_a = \ln(c^a_1) \)
+  - Tipo \( b \): \( U_b = \rho \ln(c^b_1) + (1 - \rho) \ln(c^b_2) \), con \( 0 < \rho < 1 \) y \( \rho R > 1 \)
+
+### *Desarrollo del modelo*
+
+#### *Caso 1: Autarquía*
+
+- Cada agente invierte su dotación.
+- Tipo \( a \): consume 1 en \( t = 1 \), \( 0 \) en \( t = 2 \).
+- Tipo \( b \): consume \( 0 \) en \( t = 1 \), \( R \) en \( t = 2 \).
+- Utilidad esperada:
+  \[
+  U_{\text{autarquía}} = \theta \ln(1) + (1 - \theta)\rho \ln(R) = (1 - \theta)\rho \ln(R)
+  \]
+
+#### *Caso 2: Planificador social con información perfecta*
+
+- Tipo \( a \): \( c^a_2 = 0 \), consume solo en \( t = 1 \)
+- Tipo \( b \): \( c^b_1 = 0 \), consume solo en \( t = 2 \)
+
+**Restricción de recursos:**
+\[
+c^b_2 = \frac{(1 - \theta c^a_1)R}{1 - \theta}
+\]
+
+**Utilidad esperada:**
+\[
+\mathbb{E}[U] = \theta \ln(c^a_1) + (1 - \theta)\rho \ln\left(\frac{(1 - \theta c^a_1)R}{1 - \theta}\right)
+\]
+
+**Condición de primer orden:**
+\[
+\frac{\partial \mathbb{E}[U]}{\partial c^a_1} = \frac{\theta}{c^a_1} - \frac{(1 - \theta)\rho \theta}{1 - \theta c^a_1} = 0
+\Rightarrow
+c^a_1 = \frac{1}{\theta + (1 - \theta)\rho}
+\]
+
+**Consumo óptimo tipo \( b \):**
+\[
+c^b_2 = \rho R \cdot \frac{1}{\theta + (1 - \theta)\rho}
+\]
+
+### *Resultados*
+
+- Un banco puede implementar la asignación eficiente sin observar tipos, ofreciendo depósitos rescatables por \( c^a_1 \) en \( t = 1 \).
+- Si todos los tipo \( a \) retiran en \( t = 1 \) y los tipo \( b \) esperan, se alcanza el primer mejor como un equilibrio de Nash.
+- Pero también existe un segundo equilibrio: **una corrida bancaria**, donde todos los depositantes retiran en \( t = 1 \) ante el temor de que los demás lo hagan también. Esto agota la liquidez del banco y nadie recibe nada en \( t = 2 \).
+
+**Políticas de prevención:**
+
+1. **Suspensión de pagos**: limitar retiros en \( t = 1 \) a una fracción \( \theta \) elimina el incentivo a correr.
+
+2. **Seguro de depósitos**: garantía estatal del consumo \( c^b_2 \) disuade a tipo \( b \) de retirar anticipadamente.
+
+3. **Prestamista de última instancia**: el banco central presta a una tasa menor que \( R \) cuando hay demasiadas solicitudes de retiro.
+
+**Conclusión:**  
+El modelo muestra que la combinación de activos ilíquidos y pasivos líquidos crea el riesgo de corridas bancarias auto-cumplidas, aun cuando el banco es fundamentalmente solvente. Sin mecanismos de respaldo, el sistema financiero es inherentemente frágil.
+
+## *Caso SVB y Modelo Diamond–Dybvig*
+
+En este apartado hacemos un ejercicio donde intentamos aplicar el modelo visto en clase —el modelo de corridas bancarias de Diamond–Dybvig— al caso de SVB en 2023. Sabemos que esta adaptación no necesariamente es una representación teóricamente "correcta" o "rigurosa" , pero nos permite usar las herramientas del modelo para interpretar algunos de los hechos económicos clave y entender cómo un shock puede desencadenar una corrida bancaria en la práctica.
+
+
+### *Supuestos*
+
+1. **Pasivos líquidos (depósitos a corto plazo):** Los clientes de SVB (startups y fondos de VC) depositan fondos que pueden ser retirados en cualquier momento.
+2. **Activos ilíquidos (bonos de largo plazo):** SVB invierte en bonos del Tesoro de largo plazo que pierden valor si se venden anticipadamente.
+3. **Choque externo:** Un aumento abrupto de las tasas de interés (\( \uparrow i \)) que:
+   - Reduce el valor de los bonos en el mercado secundario.
+   - Daña el flujo de caja de startups, elevando su demanda por liquidez.
+4. **Heterogeneidad no observable:** Como en Diamond–Dybvig, no es observable si un cliente necesita liquidez inmediata (tipo \( a \)) o puede esperar (tipo \( b \)).
+5. **Depósitos parcialmente asegurados:** Solo hasta USD 250,000 por cuenta, generando incentivos adicionales para retirar temprano ante señales de riesgo.
+
+### *Desarrollo del modelo*
+
+#### *Retornos de activos y pasivos*
+
+- Activo ilíquido invertido en bonos: 
+  - Valor si se mantiene: \( R > 1 \) (en \( t = 2 \))
+  - Valor si se liquida anticipadamente por choque: \( \tilde{q} < 1 \)
+    - \( \tilde{q} = q(i) \), donde \( \frac{dq}{di} < 0 \)
+
+#### *Restricción de recursos modificada*
+
+El banco enfrenta ahora una pérdida de valor en activos líquidos si liquida anticipadamente. Modificamos la restricción de recursos de la versión con planificador social:
+
+\[
+c^b_2 = \frac{(1 - \theta c^a_1)\cdot R}{1 - \theta}
+\quad \longrightarrow \quad
+c^b_2 = \frac{(1 - \theta c^a_1)\cdot R + \theta (1 - \eta)c^a_1 \cdot (\tilde{q} - 1)}{1 - \theta}
+\]
+
+Donde:
+- \( \eta \in [0,1] \) es la fracción de depósitos liquidados por necesidad real de liquidez (tipo \( a \)).
+- \( (1 - \eta) \) representa el exceso de retiros por pánico o contagio.
+
+#### *Utilidad esperada con riesgo de corrida*
+
+En presencia de incertidumbre sobre cuántos retirarán en \( t = 1 \), los agentes tipo \( b \) enfrentan una expectativa sobre su consumo futuro. Si todos intentan retirar en \( t = 1 \), se liquida todo a \( \tilde{q} < 1 \) y no queda nada para \( t = 2 \):
+
+\[
+\mathbb{E}[U] =
+\begin{cases}
+\theta \ln(c^a_1) + (1 - \theta)\rho \ln(c^b_2) & \text{si no hay pánico} \\
+\theta \ln(c^a_1) + (1 - \theta)\rho \cdot (-\infty) & \text{si hay corrida}
+\end{cases}
+\]
+
+Esto genera incentivos a retirar anticipadamente incluso si el agente es tipo \( b \), si espera que otros lo harán.
+
+### *Resultados y aplicación a SVB*
+
+- **Equilibrio eficiente (sin pánico):** Solo los tipo \( a \) retiran en \( t = 1 \), y los tipo \( b \) esperan. El banco liquida lo justo y cumple sus compromisos:
+  
+  \[
+  c^a_1 = \frac{1}{\theta + (1 - \theta)\rho}, \quad
+  c^b_2 = \frac{(1 - \theta c^a_1)\cdot R}{1 - \theta}
+  \]
+
+- **Equilibrio de corrida:** Si muchos depositantes (tipo \( b \)) temen insolvencia:
+  - Retiran en \( t = 1 \)
+  - El banco debe liquidar activos a pérdida: \( \tilde{q} < 1 \)
+  - No quedan recursos para \( t = 2 \): \( c^b_2 = 0 \)
+
+#### *Aplicación directa a SVB*:
+
+- SVB tenía fuerte **descalce de vencimientos**: depósitos a corto plazo (\( \text{pasivos líquidos} \)), inversiones a largo plazo en bonos del Tesoro (\( \text{activos ilíquidos} \)).
+- El **choque de tasas de interés** redujo \( \tilde{q} \), el valor de los bonos en mercado secundario.
+- Ante necesidad de liquidez de startups, SVB **vendió bonos con pérdida**, revelando problemas de balance.
+- **Anuncio de recapitalización fallida** → interpretado como señal negativa → disparó el pánico.
+- Más del 90% de los depósitos no estaban asegurados → aumentó incentivo individual a retirar.
+- Se materializó el **equilibrio de corrida bancaria auto-cumplida**, como en el modelo de Diamond–Dybvig.
+
+### *Intervención y solución*
+
+**Predicción del modelo**: Se necesita una política creíble para frenar la corrida.
+
+- El gobierno intervino garantizando **todos los depósitos**, incluso los no asegurados:
+  - Esto elimina el incentivo de los tipo \( b \) a retirar por miedo.
+  - Se restaura el equilibrio eficiente.
+
+Esta intervención se asemeja a la **política de seguro de depósitos** o **prestamista de última instancia** del modelo original.
+
+### *Conclusión*
+
+Intentamos explicar la corrida de SVB con el desarrollo análitico del modelo de Diamond–Dybvig, sin embargo , sabemos que el modelo y debe ser probado empiricamente. Por lo que este fue solo un ejericio de intentar el modelo teorico vista en clase con los hechos importantes del caso SVB:
+
+- Mismos elementos: descalce de plazos, agentes heterogéneos, pasivos líquidos vs activos ilíquidos, creencias auto-cumplidas.
+- La corrida fue racional bajo expectativas negativas.
+- La intervención estatal fue necesaria para restablecer la confianza y evitar contagio.
+
+Este caso refuerza la relevancia del modelo para entender vulnerabilidades estructurales del sistema financiero.
+
+\newpage
+
+\begin{thebibliography}{9}
+
+\bibitem{congress2018}
+Congress.gov. (2018). \textit{Economic Growth, Regulatory Relief, and Consumer Protection Act (Public Law 115-174)}. Recuperado de: \url{https://www.congress.gov/bill/115th-congress/senate-bill/2155}
+
+\bibitem{chen2025}
+Chen, J. (2025, 3 febrero). \textit{Crapo Bill: What It Is, How It Works, and Criticism}. Investopedia. Recuperado de: \url{https://www.investopedia.com/terms/c/crapo-bill.asp}
+
+\bibitem{federal2023}
+Federal Reserve Board. (2023). \textit{Review of the Federal Reserve's Supervision and Regulation of Silicon Valley Bank}. Recuperado de: \url{https://www.federalreserve.gov/publications/2023-April-SVB-Evolution-of-Silicon-Valley-Bank.htm}
+
+\bibitem{federal2019}
+Federal Reserve Board. (2019). \textit{Federal Reserve Board finalizes rules that tailor its regulations for domestic and foreign banks to more closely match their risk profiles}. Recuperado de: \url{https://www.federalreserve.gov/newsevents/pressreleases/bcreg20191010a.htm}
+
+\bibitem{perkins2018}
+Perkins, D. W., et al. (2018). \textit{Economic Growth, Regulatory Relief, and Consumer Protection Act (P.L. 115-174) and Selected Policy Issues (CRS Report No. R45073)}. Congressional Research Service. Recuperado de: \url{https://sgp.fas.org/crs/misc/R45073.pdf}
+
+\bibitem{shahshahani2023}
+Shahshahani, N. M. A. S. (2023, 9 agosto). \textit{The Problem with Political Antitrust}. ProMarket. Recuperado de: \url{https://www.promarket.org/2023/08/07/the-problem-with-political-antitrust/}
+
+\bibitem{slodysko2023}
+Slodysko, B., \& Sweet, K. (2023, 21 marzo). \textit{Lobbyists pushed changes blamed for contributing to collapse of Silicon Valley Bank and Signature Bank}. AP News. Recuperado de: \url{https://apnews.com/article/banking-crisis-congress-lobbying-svb-c2bc00ad41ae7fd1ec9d0ffb781383f2}
+
+\bibitem{sullivan2023}
+Sullivan, A. (2023, 2 mayo). \textit{BGR Deep Dives: Federal Reserve SVB review}. BGR Group. Recuperado de: \url{https://bgrdc.com/bgr-deep-dives-federal-reserve-svb-review}
+
+\bibitem{svb2022}
+SVB Financial Group. (2022). \textit{Annual Report on Form 10-K}. Recuperado de: \url{https://d18rn0p25nwr6d.cloudfront.net/CIK-0000719739/f36fc4d7-9459-41d7-9e3d-2c468971b386.pdf}
+
+\end{thebibliography}
+
